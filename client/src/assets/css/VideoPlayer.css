@@ -1,0 +1,42 @@
+/* .video-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    background: #000;
+}
+
+.video-player {
+    width: 100%;
+    height: auto;
+}
+
+.controls {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+}
+
+button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+input[type="range"] {
+    flex-grow: 1;
+    margin: 0 10px;
+} */

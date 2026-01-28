@@ -1,0 +1,1344 @@
+{
+  "info": {
+    "name": "LMS Platform API Collection",
+    "description": "Complete API collection for LMS platform with all endpoints for user management, courses, classes, blogs, payments, and more.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password@123\",\n  \"mobile\": \"0300123456\",\n  \"role\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Instructor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Jane Smith\",\n  \"email\": \"instructor@example.com\",\n  \"password\": \"Password@123\",\n  \"mobile\": \"0300987654\",\n  \"role\": \"instructor\",\n  \"qualification\": \"Masters in Computer Science\",\n  \"subjects\": \"JavaScript, React, Node.js\",\n  \"teaching_experience\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"AdminPass@123\",\n  \"mobile\": \"0300555666\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "users"]
+            }
+          }
+        },
+        {
+          "name": "Edit User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"mobile\": \"0300111222\",\n  \"profileImage\": \"https://example.com/image.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/edit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "edit"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Instructor Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/toggle-status/{{instructor_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "toggle-status", "{{instructor_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Complete JavaScript Mastery\",\n  \"description\": \"Learn JavaScript from basics to advanced concepts including ES6, async/await, and more\",\n  \"thumbnail\": \"https://example.com/javascript-course.jpg\",\n  \"courseType\": \"Recorded\",\n  \"duration\": \"40h 30m\",\n  \"courseLevel\": \"Beginner\",\n  \"tags\": [\"JavaScript\", \"Web Development\", \"Programming\"],\n  \"lessons\": [\n    {\n      \"title\": \"Introduction to JavaScript\",\n      \"content\": \"https://example.com/lesson1-video\"\n    },\n    {\n      \"title\": \"Variables and Data Types\",\n      \"content\": \"https://example.com/lesson2-video\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/create",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course"]
+            }
+          }
+        },
+        {
+          "name": "Get Course By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Complete JavaScript Mastery - Updated\",\n  \"description\": \"Updated course description\",\n  \"courseLevel\": \"Intermediate\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/edit/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "edit", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Enroll Student in Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/enroll",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "enroll"]
+            }
+          }
+        },
+        {
+          "name": "Publish Course",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/publish",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Create Discussion Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to implement async/await?\",\n  \"content\": \"Can someone explain async/await with real examples?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/discussions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "discussions"]
+            }
+          }
+        },
+        {
+          "name": "Get Course Discussions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/discussions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "discussions"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Like on Discussion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/discussions/{{discussion_id}}/like",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "discussions", "{{discussion_id}}", "like"]
+            }
+          }
+        },
+        {
+          "name": "Add Reply to Discussion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Great question! async/await is syntactic sugar over promises...\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/discussions/{{discussion_id}}/replies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "discussions", "{{discussion_id}}", "replies"]
+            }
+          }
+        },
+        {
+          "name": "Submit Quiz Attempt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [0, 2, 1, 3],\n  \"score\": 75\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/quizzes/{{quiz_id}}/attempts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "quizzes", "{{quiz_id}}", "attempts"]
+            }
+          }
+        },
+        {
+          "name": "Get Student Quiz Attempt",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/quizzes/{{quiz_id}}/attempts/student",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "quizzes", "{{quiz_id}}", "attempts", "student"]
+            }
+          }
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileUrl\": \"https://example.com/assignment-submission.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/assignments/{{assignment_id}}/submit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "assignments", "{{assignment_id}}", "submit"]
+            }
+          }
+        },
+        {
+          "name": "Get Assignment Submission",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/course/{{course_id}}/assignments/{{assignment_id}}/submission",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "course", "{{course_id}}", "assignments", "{{assignment_id}}", "submission"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "item": [
+        {
+          "name": "Create Class",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Advanced JavaScript Class\",\n  \"description\": \"A comprehensive class covering advanced JavaScript concepts\",\n  \"price\": 5000,\n  \"subjects\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes"]
+            }
+          }
+        },
+        {
+          "name": "Get All Classes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes"]
+            }
+          }
+        },
+        {
+          "name": "Get Class By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes/{{class_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes", "{{class_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Class",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Advanced JavaScript Class - Updated\",\n  \"description\": \"Updated description\",\n  \"price\": 6000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes/{{class_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes", "{{class_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Enroll Students in Class",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes/enroll/{{class_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes", "enroll", "{{class_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Class",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/classes/{{class_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "classes", "{{class_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subjects",
+      "item": [
+        {
+          "name": "Create Subject",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"JavaScript Fundamentals\",\n  \"description\": \"Learn the fundamentals of JavaScript programming\",\n  \"thumbnail\": \"https://example.com/js-thumbnail.jpg\",\n  \"lessons\": [\n    {\n      \"title\": \"Variables and Types\",\n      \"content\": \"https://example.com/lesson1\"\n    }\n  ],\n  \"liveSchedules\": [\n    {\n      \"dayOfWeek\": \"Monday\",\n      \"startTime\": \"10:00\",\n      \"endTime\": \"11:30\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/subjects/{{class_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subjects", "{{class_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get All Subjects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subjects",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subjects"]
+            }
+          }
+        },
+        {
+          "name": "Get Subject By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subjects/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subjects", "{{subject_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Subject",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"JavaScript Fundamentals - Updated\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/subjects/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subjects", "{{subject_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Subject",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subjects/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subjects", "{{subject_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subject Content & Lessons",
+      "item": [
+        {
+          "name": "Add Content to Subject",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"JavaScript Cheat Sheet\",\n  \"url\": \"https://example.com/js-cheatsheet.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/content/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "content", "{{subject_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Edit Content",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated JavaScript Cheat Sheet\",\n  \"url\": \"https://example.com/js-cheatsheet-v2.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/content/{{subject_id}}/{{content_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "content", "{{subject_id}}", "{{content_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Content",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/content/{{subject_id}}/{{content_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "content", "{{subject_id}}", "{{content_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Add Lesson",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"ES6 Arrow Functions\",\n  \"content\": \"Comprehensive guide to arrow functions in ES6\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/lesson/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lesson", "{{subject_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Edit Lesson",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"ES6 Arrow Functions - Advanced\",\n  \"content\": \"Advanced guide to arrow functions in ES6\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/lesson/{{subject_id}}/{{lesson_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lesson", "{{subject_id}}", "{{lesson_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Lesson",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/lesson/{{subject_id}}/{{lesson_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lesson", "{{subject_id}}", "{{lesson_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assignments",
+      "item": [
+        {
+          "name": "Create Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Build a Todo App\",\n  \"description\": \"Create a todo application using JavaScript and DOM manipulation\",\n  \"dueDate\": \"2026-02-28\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assignment/{{subject_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assignment", "{{subject_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Edit Assignment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Build a Todo App - Updated\",\n  \"description\": \"Updated description\",\n  \"dueDate\": \"2026-03-05\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assignment/{{subject_id}}/{{assignment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assignment", "{{subject_id}}", "{{assignment_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileUrl\": \"https://example.com/student-submission.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assignment/{{subject_id}}/{{assignment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assignment", "{{subject_id}}", "{{assignment_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Assignment Submission",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/assignment/{{subject_id}}/{{assignment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assignment", "{{subject_id}}", "{{assignment_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Assignment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/assignment/{{subject_id}}/{{assignment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assignment", "{{subject_id}}", "{{assignment_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blogs",
+      "item": [
+        {
+          "name": "Create Blog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"10 JavaScript Tips and Tricks\",\n  \"thumbnail\": \"https://example.com/blog-thumbnail.jpg\",\n  \"description\": \"Learn 10 amazing JavaScript tips and tricks to improve your coding skills and productivity.\",\n  \"tags\": [\"JavaScript\", \"Programming\", \"Tips\", \"Web Development\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/blogs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "blogs"]
+            }
+          }
+        },
+        {
+          "name": "Get All Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/blogs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "blogs"]
+            }
+          }
+        },
+        {
+          "name": "Get Blog By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/blogs/{{blog_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "blogs", "{{blog_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Blog",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"15 JavaScript Tips and Tricks - Updated\",\n  \"description\": \"Updated description with more tips\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/blogs/{{blog_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "blogs", "{{blog_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Blog",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/blogs/{{blog_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "blogs", "{{blog_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Announcements",
+      "item": [
+        {
+          "name": "Create Announcement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Course Materials Available\",\n  \"message\": \"Important course materials have been uploaded. Please review them before the next class.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/announcement/{{course_id}}/create",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "announcement", "{{course_id}}", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get Course Announcements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/announcement/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "announcement", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Announcement By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/announcement/{{announcement_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "announcement", "{{announcement_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Announcement",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Announcement\",\n  \"message\": \"Updated message content\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/announcement/{{announcement_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "announcement", "{{announcement_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Announcement",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/announcement/{{course_id}}/{{announcement_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "announcement", "{{course_id}}", "{{announcement_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment Intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 5000,\n  \"currency\": \"PKR\",\n  \"studentId\": \"{{student_id}}\",\n  \"courseId\": \"{{course_id}}\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expiryDate\": \"12/25\",\n  \"cvv\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payment/pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payment", "pay"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OTP & Password",
+      "item": [
+        {
+          "name": "Generate OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/otp/generate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "otp", "generate"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/otp/verify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "otp", "verify"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"newPassword\": \"NewPassword@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/password/reset",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "password", "reset"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Live Meetings",
+      "item": [
+        {
+          "name": "Create Live Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"JavaScript Live Class - Week 1\",\n  \"description\": \"Live class to discuss JavaScript fundamentals\",\n  \"startTime\": \"2026-02-01T10:00:00Z\",\n  \"endTime\": \"2026-02-01T11:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/zoom",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zoom"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "student_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "instructor_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "course_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "class_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "subject_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "blog_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "announcement_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "discussion_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "assignment_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "quiz_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "lesson_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "content_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
