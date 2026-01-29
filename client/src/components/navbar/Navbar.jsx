@@ -219,8 +219,8 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-xl font-bold">
-              <span className="text-gray-900">CORPORATE</span>
-              <span className="text-orange-500">PRISM</span>
+              <span className="text-gray-900">SMARTFLOW</span>
+              <span className="text-orange-500"></span>
             </Link>
           </div>
 

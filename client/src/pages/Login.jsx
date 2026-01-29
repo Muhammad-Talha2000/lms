@@ -786,7 +786,7 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="uppercase font-bold text-xl absolute top-2 left-3">
-        Corporate<span className="text-orange-500">Prism</span>
+        SMARTFLOW<span className="text-orange-500">LMS</span>
       </h1>
       <Tabs
         defaultValue="register"

@@ -20,7 +20,7 @@ const Footer = () => {
                 <Phone size={18} className="mr-2" />
                 <span>(123) 123-1234</span>
               </div>
-              <p>info@corporateprism.com</p>
+              <p>smartflowtechofficial@gmail.com</p>
             </div>
             <div className="flex space-x-4 mt-4">
               <Facebook className="w-5 h-5 cursor-pointer hover:text-orange-500" />
@@ -118,7 +118,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="mt-8 pt-4 border-t border-gray-700 text-center text-gray-400">
-          Copyright © 2025 Corporate Prism. All Rights Reserved.
+          Copyright © 2025 Smartflow Tech. All Rights Reserved.
         </div>
       </div>
     </footer>

@@ -34,7 +34,7 @@ const ProfilePage = () => {
 
         <main className="flex-1 flex flex-col gap-8 h-full overflow-y-auto no-scrollbar pr-2">
           <h1 className="text-4xl font-bold">
-            Welcome to Corporate <span className="text-orange-500">Prism</span>
+            Welcome to SMARTFLOW <span className="text-orange-500">LMS</span>
           </h1>
 
           <div className="flex gap-8">

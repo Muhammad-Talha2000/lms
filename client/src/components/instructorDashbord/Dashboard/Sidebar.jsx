@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 
 
 const Sidebar = ({ role, menuItems, headerTitle, onSelect, user, notificationCount  }) => {
+  console.log("Sidebar user data:", user);
+  console.log("Profile image path:", user?.profileImage);
  
   // Initialize activeItem from localStorage
   const [activeItem, setActiveItem] = useState(() => {
@@ -35,11 +37,17 @@ const Sidebar = ({ role, menuItems, headerTitle, onSelect, user, notificationCou
 
       {user && (
         <div className="pb-2 mb-4 border-b-2 border-gray-300 flex flex-col justifu-center items-center gap-2">
-          <img
-            src={user.profileImage}
-            alt=""
-            className="w-20 h-20 rounded-full"
-          />
+          <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden">
+            <img
+              src={user.profileImage ? `${user.profileImage}` : "/default-avatar.png"}
+              alt={user.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = "none";
+                e.target.parentElement.innerHTML = '<div style="width:100%; height:100%; background:#f97316; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:24px;">'+user.name.charAt(0)+'</div>';
+              }}
+            />
+          </div>
           <p className="text-sm font-bold text-orange-500">{user.name}</p>
         </div>
       )}
