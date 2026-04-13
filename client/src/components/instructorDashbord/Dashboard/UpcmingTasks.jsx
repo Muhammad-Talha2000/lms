@@ -3,7 +3,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 
 const UpcmingTasks = () => {
   return (
-    <div className="container px-8">
+    <div className="w-full max-w-full min-w-0 px-3 sm:px-6 lg:px-8">
       <h1 className="font-semibold text-3xl mb-8">Upcoming Tasks</h1>
       <div className="border-l-4 border-orange-500 pl-4 my-4">
         <h1 className="font-semibold text-lg">Environment Discuss</h1>

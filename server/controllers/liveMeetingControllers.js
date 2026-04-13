@@ -525,6 +525,7 @@ export const getScheduledMeetings = async (req, res) => {
       courseType: "Live",
     });
     const scheduledMeetings = [];
+    const schedulingErrors = [];
 
     for (const course of courses) {
       try {
@@ -548,8 +549,25 @@ export const getScheduledMeetings = async (req, res) => {
           `Error scheduling meeting for course ${course._id}:`,
           courseError
         );
+        schedulingErrors.push({
+          courseId: course._id.toString(),
+          message: courseError?.message || "Failed to schedule meeting",
+        });
       }
     }
+
+    const hasAuthGrantError = schedulingErrors.some((err) =>
+      err.message?.includes("invalid_grant")
+    );
+
+    if (scheduledMeetings.length === 0 && hasAuthGrantError) {
+      return res.status(502).json({
+        message:
+          "Google Calendar authentication failed (invalid_grant). Reconnect Google credentials and refresh token.",
+        code: "GOOGLE_AUTH_INVALID_GRANT",
+      });
+    }
+
     res.json(scheduledMeetings);
   } catch (error) {
     console.error("Error fetching scheduled meetings:", error);

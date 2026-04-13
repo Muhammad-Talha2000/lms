@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const BASEURL = "https://lms-corporateprism-backend.vercel.app/api/v1/course";
+const BASEURL = `${API_V1_BASE}/course`;
 
 // Function to get auth headers
 

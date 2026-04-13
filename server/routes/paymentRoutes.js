@@ -90,10 +90,21 @@
 // export default router;
 
 import express from "express";
-import { createPaymentIntent } from "../controllers/paymentControllers.js";
+import { authenticateUser } from "../middleware/authMiddleware.js";
+import {
+  createCheckoutSession,
+  confirmCheckoutSession,
+} from "../controllers/paymentControllers.js";
 
 const router = express.Router();
 
-router.post("/pay", createPaymentIntent);
+router.post(
+  "/create-checkout-session",
+  authenticateUser,
+  createCheckoutSession
+);
+router.post("/confirm-session", authenticateUser, confirmCheckoutSession);
+/** Alias — same handler as Stripe checkout */
+router.post("/pay", authenticateUser, createCheckoutSession);
 
 export default router;

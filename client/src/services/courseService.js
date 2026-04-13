@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const BASEURL = "http://localhost:5000/api/v1/course";
+const BASEURL = `${API_V1_BASE}/course`;
 
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 

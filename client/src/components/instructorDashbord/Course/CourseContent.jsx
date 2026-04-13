@@ -33,8 +33,8 @@ const CourseContent = () => {
   if (loading) return <p>Loading....</p>;
 
   return (
-    <div>
-      <h2 className="text-3xl font-bold my-4 text-center mb-12">
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
+      <h2 className="text-3xl font-bold my-4 text-center mb-12 px-1 break-words">
         <span className="text-orange-500 font-bold">Courses</span> offered by
         You!
       </h2>

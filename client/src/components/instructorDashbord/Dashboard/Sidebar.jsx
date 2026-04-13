@@ -4,9 +4,6 @@ import { Card } from "@/components/ui/card";
 
 
 const Sidebar = ({ role, menuItems, headerTitle, onSelect, user, notificationCount  }) => {
-  console.log("Sidebar user data:", user);
-  console.log("Profile image path:", user?.profileImage);
- 
   // Initialize activeItem from localStorage
   const [activeItem, setActiveItem] = useState(() => {
     return (
@@ -23,7 +20,7 @@ const Sidebar = ({ role, menuItems, headerTitle, onSelect, user, notificationCou
   }, []);
 
   return (
-    <Card className="h-fit bg-white p-4 border-r-2 border-t-2 border-b-2 rounded-lg">
+    <Card className="h-fit w-full min-w-0 bg-white p-4 border-r-2 border-t-2 border-b-2 rounded-lg shadow-sm lg:shadow-none">
       {/* Header */}
 
       {user && user.role !== "instructor" && (

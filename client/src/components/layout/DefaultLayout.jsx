@@ -6,7 +6,9 @@ const DefaultLayout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <main className="py-12 mt-12">{children}</main>
+      <main className="mt-12 min-w-0 w-full overflow-x-hidden bg-background py-8 sm:py-12">
+        {children}
+      </main>
       <Footer />
     </>
   );

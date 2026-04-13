@@ -319,32 +319,32 @@ const DiscussionBox = ({ courseId }) => {
   );
 
   return (
-    <div className="p-6 bg-orange-50 min-h-full overflow-y-scroll no-scrollbar ">
-      <Tabs defaultValue="all-posts">
-        <TabsList className="mb-6 bg-orange-100 p-1">
+    <div className="p-3 sm:p-6 bg-orange-50 w-full max-w-full min-w-0 min-h-0">
+      <Tabs defaultValue="all-posts" className="w-full min-w-0">
+        <TabsList className="mb-4 sm:mb-6 bg-orange-100 p-1 w-full max-w-full min-w-0 h-auto flex flex-wrap sm:flex-nowrap justify-start gap-1 overflow-x-auto">
           <TabsTrigger
             value="all-posts"
-            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white shrink-0"
           >
             All Posts
           </TabsTrigger>
           <TabsTrigger
             value="my-posts"
-            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white shrink-0"
           >
             My Posts
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all-posts">
-          <div className="flex justify-end items-center mb-6">
+        <TabsContent value="all-posts" className="min-w-0">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center mb-4 sm:mb-6">
             {/* <Input
               type="text"
               placeholder="Search forum"
               className="w-1/2 mr-4 border-orange-200 focus:border-orange-500"
             /> */}
             <Button
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto shrink-0"
               onClick={() => setIsDialogOpen(true)}
             >
               Create Post
@@ -353,15 +353,15 @@ const DiscussionBox = ({ courseId }) => {
           {discussions.map(renderDiscussionCard)}
         </TabsContent>
 
-        <TabsContent value="my-posts">
-          <div className="flex justify-end items-center mb-6">
+        <TabsContent value="my-posts" className="min-w-0">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center mb-4 sm:mb-6">
             {/* <Input
               type="text"
               placeholder="Search my posts"
               className="w-1/2 mr-4 border-orange-200 focus:border-orange-500"
             /> */}
             <Button
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto shrink-0"
               onClick={() => setIsDialogOpen(true)}
             >
               Create Post

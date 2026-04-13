@@ -115,19 +115,21 @@ const Announcements = ({ courseId }) => {
   const isInstructor = loggedinUser && loggedinUser.user.role === "instructor";
 
   return (
-    <div className="p-6 bg-orange-50 rounded-lg shadow-md h-screen overflow-y-scroll no-scrollbar">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-orange-500">Announcements</h2>
+    <div className="p-3 sm:p-6 bg-orange-50 rounded-lg shadow-md w-full max-w-full min-w-0 min-h-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-orange-500 break-words min-w-0 pr-1 leading-tight">
+          Announcements
+        </h2>
         {isInstructor && (
           <button
             onClick={() => {
               resetForm();
               setShowModal(true);
             }}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out flex items-center"
+            className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2.5 px-3 sm:px-4 rounded-md transition duration-300 ease-in-out inline-flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto text-sm sm:text-base"
           >
-            <FaPlus className="mr-2" />
-            Create Announcement
+            <FaPlus className="shrink-0" />
+            <span className="whitespace-nowrap">New announcement</span>
           </button>
         )}
       </div>
@@ -160,25 +162,29 @@ const Announcements = ({ courseId }) => {
             key={ann._id}
             className="bg-white border-l-4 border-orange-500 p-5 rounded-lg shadow-sm hover:shadow-md transition duration-300"
           >
-            <div className="flex justify-between">
-              <h3 className="text-xl font-semibold text-orange-500">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3 min-w-0">
+              <h3 className="text-lg sm:text-xl font-semibold text-orange-500 break-words min-w-0 flex-1">
                 {ann.title}
               </h3>
-              <div className="flex space-x-2 items-center">
-                <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full whitespace-nowrap">
                   {new Date(ann.createdAt).toLocaleDateString()}
                 </span>
                 {isInstructor && (
-                  <div className="flex space-x-2 ml-2">
+                  <div className="flex items-center gap-2">
                     <button
+                      type="button"
                       onClick={() => handleEditAnnouncement(ann)}
-                      className="text-blue-500 hover:text-blue-700 transition-colors"
+                      className="text-blue-500 hover:text-blue-700 transition-colors p-1"
+                      aria-label="Edit announcement"
                     >
                       <FaEdit />
                     </button>
                     <button
+                      type="button"
                       onClick={() => confirmDelete(ann._id)}
-                      className="text-red-500 hover:text-red-700 transition-colors"
+                      className="text-red-500 hover:text-red-700 transition-colors p-1"
+                      aria-label="Delete announcement"
                     >
                       <FaTrash />
                     </button>
@@ -186,7 +192,7 @@ const Announcements = ({ courseId }) => {
                 )}
               </div>
             </div>
-            <p className="text-gray-700 mt-2 mb-3">{ann.message}</p>
+            <p className="text-gray-700 mt-2 mb-3 break-words">{ann.message}</p>
             <div className="flex items-center text-gray-500 text-sm">
               <FaRegClock className="mr-2" />
               {new Date(ann.createdAt).toLocaleTimeString([], {
@@ -200,8 +206,8 @@ const Announcements = ({ courseId }) => {
 
       {/* Modal for creating/editing announcement */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-lg max-h-[90dvh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-semibold text-orange-500">
                 {isEditing ? "Edit Announcement" : "Create Announcement"}
@@ -270,8 +276,8 @@ const Announcements = ({ courseId }) => {
 
       {/* Delete confirmation modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-md max-h-[90dvh] overflow-y-auto">
             <h3 className="text-xl font-semibold text-red-500 mb-4">
               Confirm Deletion
             </h3>

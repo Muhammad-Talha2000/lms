@@ -1,48 +1,34 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const API_URL = "http://localhost:5000/api/v1/payment";
+const API_URL = `${API_V1_BASE}/payment`;
 
-// Create payment intent with AbhiPay
-export const createPaymentIntent = async (paymentData) => {
-  try {
-    const response = await axios.post(`${API_URL}/pay`, paymentData);
-    return response.data;
-  } catch (error) {
-    console.log("Error while creating payment intent", error);
-  }
+const authHeaders = (token) =>
+  token ? { Authorization: `Bearer ${token}` } : {};
+
+/**
+ * Creates a Stripe Checkout session; returns `{ url }` to redirect the browser.
+ */
+export const createCheckoutSession = async (paymentData, token) => {
+  const response = await axios.post(
+    `${API_URL}/create-checkout-session`,
+    paymentData,
+    { headers: { ...authHeaders(token), "Content-Type": "application/json" } }
+  );
+  return response.data;
 };
 
-// // Verify payment status (optional - for additional verification)
-// export const verifyPayment = async (paymentId, token) => {
-//   try {
-//     const response = await axios.get(`${API_URL}/verify/${paymentId}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(
-//       error.response?.data?.error ||
-//         error.response?.data?.message ||
-//         "Failed to verify payment"
-//     );
-//   }
-// };
+/**
+ * Verifies a completed Checkout session and enrolls the student (call after Stripe redirect).
+ */
+export const confirmStripeCheckoutSession = async (sessionId, token) => {
+  const response = await axios.post(
+    `${API_URL}/confirm-session`,
+    { sessionId },
+    { headers: { ...authHeaders(token), "Content-Type": "application/json" } }
+  );
+  return response.data;
+};
 
-// export const processPayment = async (paymentData) => {
-//   try {
-//     const response = await axios.post(
-//       "https://test-api.ahipay.com/transactions",
-//       paymentData
-//     );
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.response?.data?.message || "Payment failed");
-//   }
-// };
-
-// export default {
-//   createPaymentIntent,
-//   verifyPayment,
-// };
+/** @deprecated Use createCheckoutSession */
+export const createPaymentIntent = createCheckoutSession;

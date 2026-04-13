@@ -28,7 +28,7 @@ router.get("/profile", authenticateUser, getUserProfile);
 router.get("/users", authenticateUser, getAllUsers);
 
 // Logout User
-router.post("/logout", logoutUser);
+router.post("/logout", authenticateUser, logoutUser);
 
 // toggle status
 router.put(

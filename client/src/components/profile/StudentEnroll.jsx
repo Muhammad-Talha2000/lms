@@ -406,50 +406,48 @@ const StudentEnroll = () => {
   }, [loggedinUser?.user?._id]);
 
   return (
-    <div className="bg-white rounded-lg p-6">
-      <div className="container mx-auto">
+    <div className="min-w-0 w-full rounded-lg border border-border bg-card p-3 sm:p-6 shadow-sm">
+      <div className="mx-auto w-full max-w-6xl min-w-0">
         {/* Live Session Notification */}
         {liveSessions.length > 0 && (
-          <div className="bg-orange-500 p-6 rounded-lg shadow-lg mb-6 border-l-4 border-orange-500 relative overflow-hidden animate-fadeIn">
+          <div className="relative mb-6 overflow-hidden rounded-lg border-l-4 border-primary bg-primary p-4 sm:p-6 shadow-lg animate-fadeIn">
             {/* Animated background pulse effect */}
-            <div className="absolute inset-0 bg-orange-100 opacity-50 animate-pulse"></div>
+            <div className="absolute inset-0 bg-primary/20 opacity-50 animate-pulse" />
 
-            {/* Notification glow */}
-            <div className="absolute -top-10 -right-10 w-20 h-20 bg-orange-500 rounded-full opacity-20 animate-ping"></div>
+            <div className="absolute -top-10 -right-10 h-20 w-20 rounded-full bg-primary opacity-20 animate-ping" />
 
             {liveSessions.map((session, index) => (
               <div key={index} className="mb-6 relative z-10 last:mb-0">
-                <div className="flex items-start">
-                  {/* Live indicator dot */}
-                  <div className="mr-3 mt-1">
-                    <div className="w-3 h-3 bg-orange-400 rounded-full relative">
-                      <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping opacity-75"></div>
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="mr-1 mt-1 shrink-0 sm:mr-0">
+                    <div className="relative h-3 w-3 rounded-full bg-primary-foreground/90">
+                      <div className="absolute inset-0 rounded-full bg-primary-foreground animate-ping opacity-75" />
                     </div>
                   </div>
 
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-orange-200 mb-2 flex items-center">
-                      LIVE SESSION:{" "}
-                      <span className="ml-2 uppercase text-white">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="mb-2 flex flex-col gap-1 text-base font-bold text-primary-foreground/95 sm:flex-row sm:flex-wrap sm:items-center sm:text-lg">
+                      <span className="shrink-0">LIVE SESSION:</span>
+                      <span className="break-words uppercase text-primary-foreground">
                         {session.courseName}
                       </span>
                     </h3>
 
-                    <div className="bg-orange-800 bg-opacity-50 p-4 rounded-md mb-3">
-                      <p className="text-orange-50 mb-2">
-                        <span className="font-semibold text-orange-300">
+                    <div className="mb-3 rounded-md bg-black/25 p-3 sm:p-4">
+                      <p className="mb-2 break-words text-sm text-primary-foreground/95 sm:text-base">
+                        <span className="font-semibold text-primary-foreground">
                           Topic:
                         </span>{" "}
                         {session.topic}
                       </p>
-                      <p className="text-orange-50 mb-2">
-                        <span className="font-semibold text-orange-300">
+                      <p className="mb-2 break-words text-sm text-primary-foreground/95 sm:text-base">
+                        <span className="font-semibold text-primary-foreground">
                           Instructor:
                         </span>{" "}
                         {session.instructor}
                       </p>
-                      <p className="text-orange-50">
-                        <span className="font-semibold text-orange-300">
+                      <p className="break-words text-sm text-primary-foreground/95 sm:text-base">
+                        <span className="font-semibold text-primary-foreground">
                           Starts at:
                         </span>{" "}
                         {new Date(session.startTime).toLocaleString()}
@@ -457,19 +455,18 @@ const StudentEnroll = () => {
                     </div>
 
                     <button
-                      className={`group relative overflow-hidden font-bold px-6 py-3 rounded-md transition-all duration-300 ${
+                      type="button"
+                      className={`group relative w-full overflow-hidden rounded-md px-4 py-3 text-sm font-bold transition-all duration-300 sm:w-auto sm:px-6 sm:text-base ${
                         new Date(session.startTime) > new Date()
-                          ? "bg-orange-900 text-orange-300 cursor-not-allowed"
-                          : "bg-orange-600 hover:bg-orange-500 text-white"
+                          ? "cursor-not-allowed bg-black/40 text-primary-foreground/60"
+                          : "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                       }`}
                       disabled={new Date(session.startTime) > new Date()}
                       onClick={() => window.open(session.meetingLink, "_blank")}
                     >
-                      {/* Button hover effect */}
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-400 to-orange-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+                      <span className="absolute inset-0 w-full bg-gradient-to-r from-white/0 via-white/30 to-white/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                      {/* Join text with icon */}
-                      <span className="flex items-center justify-center">
+                      <span className="relative flex items-center justify-center">
                         {new Date(session.startTime) > new Date() ? (
                           "Coming Soon"
                         ) : (
@@ -500,58 +497,56 @@ const StudentEnroll = () => {
           </div>
         )}
 
-        {/* Heading Section */}
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Enrolled Courses</h2>
+        <div className="mb-6 text-center sm:mb-10">
+          <h2 className="text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
+            Enrolled Courses
+          </h2>
         </div>
 
-        {/* Courses Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.length > 0 ? (
             courses.map((course) => (
               <Card
                 key={course._id}
-                className="bg-white border-2 border-gray-200 rounded-2xl cursor-pointer"
+                className="min-w-0 cursor-pointer rounded-2xl border-2 border-border bg-card transition-shadow hover:shadow-md"
                 onClick={() => navigate(`/learner-page/${course._id}`)}
               >
-                <div className="overflow-hidden rounded-2xl p-2">
+                <div className="overflow-hidden rounded-t-2xl p-2">
                   <img
                     src={course.thumbnail}
                     alt={course.name}
-                    className="w-full h-36 object-cover rounded-lg"
+                    className="h-32 w-full rounded-lg object-cover sm:h-36"
                   />
                 </div>
 
-                <div className="px-4">
-                  <h3 className="text-md font-bold text-gray-800">
+                <div className="min-w-0 px-3 pb-3 pt-1 sm:px-4">
+                  <h3 className="line-clamp-2 text-sm font-bold text-foreground sm:text-base">
                     {course.name}
                   </h3>
 
-                  <div className="flex items-center gap-4 text-orange-500 text-sm mt-2">
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-primary">
                     <div className="flex items-center gap-1">
-                      <FaBook className="w-4 h-4" />
-                      {course.lessons.length} Lessons
+                      <FaBook className="h-4 w-4 shrink-0" />
+                      <span>{course.lessons?.length ?? 0} Lessons</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-evenly my-2 py-2">
-                    <div className="flex items-center gap-2">
+                  <div className="my-2 flex min-w-0 flex-col gap-2 py-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-2">
                       <img
                         src={course.instructor.profileImage}
                         alt={course.instructor.name}
-                        className="w-8 h-8 rounded-full"
+                        className="h-8 w-8 shrink-0 rounded-full object-cover"
                       />
-                      <p className="flex flex-col">
-                        <span className="font-semibold text-xs text-gray-500">
+                      <p className="flex min-w-0 flex-col">
+                        <span className="truncate text-xs font-semibold text-muted-foreground">
                           {course.instructor.name}
                         </span>
-                        <span className="text-xs text-orange-500">
-                          Instructor
-                        </span>
+                        <span className="text-xs text-primary">Instructor</span>
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 text-orange-500 ml-auto">
+                    <div className="flex shrink-0 items-center gap-0.5 text-primary sm:ml-auto">
                       {[...Array(5)].map((_, index) => (
-                        <AiFillStar key={index} className="w-3 h-3" />
+                        <AiFillStar key={index} className="h-3 w-3" />
                       ))}
                     </div>
                   </div>
@@ -559,7 +554,7 @@ const StudentEnroll = () => {
               </Card>
             ))
           ) : (
-            <p className="text-gray-500 text-center col-span-3">
+            <p className="col-span-full py-8 text-center text-sm text-muted-foreground sm:text-base">
               You are not enrolled in any courses yet.
             </p>
           )}

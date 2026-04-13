@@ -338,10 +338,10 @@ const CourseSidebar = ({
   );
 
   return (
-    <div className="w-80 bg-gray-100 shadow-lg relative  flex flex-col overflow-y-auto custom-scrollbar">
-      <div className="flex-1 ">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col rounded-xl border border-gray-200/80 bg-white shadow-sm lg:w-80 lg:bg-gray-50/90">
+      <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
         <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">
+          <h2 className="text-lg sm:text-xl font-bold mb-4 break-words">
             {course?.name || "Untitled Course"}
           </h2>
           {course?.thumbnail && (
@@ -352,7 +352,7 @@ const CourseSidebar = ({
             />
           )}
         </div>
-        <nav className="px-4  pb-20">
+        <nav className="px-4 pb-4">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="content">
               <AccordionTrigger>
@@ -381,23 +381,23 @@ const CourseSidebar = ({
           </Accordion>
 
           <Button
-            className="w-full text-orange-500 bg-transparent border border-orange-500"
+            className="w-full mt-3 text-orange-500 bg-transparent border border-orange-500 flex items-center justify-center gap-2 h-auto py-3"
             onClick={onAnnouncementsClick}
           >
-            <PiMicroscopeFill className="w-8 h-8 " />
-            Announcements
+            <PiMicroscopeFill className="w-6 h-6 shrink-0" />
+            <span className="text-sm sm:text-base">Announcements</span>
           </Button>
         </nav>
+      </div>
 
-        <div className=" px-4 fixed bottom-0 left-0 w-80  bg-transparent h-20 flex items-center justify-center ">
-          <Button
-            className="bg-orange-500 w-full   text-white hover:bg-orange-600"
-            onClick={onDiscussionClick} // This will trigger the view change in LearningPage
-          >
-            <GoDiscussionDuplicate className="w-8 h-8 " />
-            Discussion Box
-          </Button>
-        </div>
+      <div className="shrink-0 border-t border-gray-200 bg-gray-100 p-3 lg:p-4">
+        <Button
+          className="bg-orange-500 w-full text-white hover:bg-orange-600 flex items-center justify-center gap-2 h-auto py-3"
+          onClick={onDiscussionClick}
+        >
+          <GoDiscussionDuplicate className="w-6 h-6 shrink-0" />
+          <span className="text-sm sm:text-base">Discussion</span>
+        </Button>
       </div>
 
       {loggedinUser.user.role === "instructor" && (

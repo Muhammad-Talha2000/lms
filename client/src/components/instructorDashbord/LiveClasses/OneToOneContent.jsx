@@ -82,7 +82,10 @@ const ScheduledMeetings = () => {
       {meetings.length === 0 ? (
         <Card>
           <CardContent className="flex justify-center items-center h-[200px]">
-            <p className="text-gray-500">No meetings scheduled.</p>
+            <p className="text-gray-500">
+              No meetings scheduled yet. A one-to-one meeting appears after a
+              student books a slot.
+            </p>
           </CardContent>
         </Card>
       ) : (
