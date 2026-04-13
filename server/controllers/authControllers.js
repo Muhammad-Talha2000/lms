@@ -102,7 +102,7 @@ export const createUser = async (req, res) => {
 // Login User
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const userIP = req.headers["x-client-ip"];
+  const userIP = req.headers["x-client-ip"] || req.ip || "unknown";
   // console.log(userIP);
 
   // Validate input
@@ -134,17 +134,10 @@ export const loginUser = async (req, res) => {
         .json({ message: "Your account is not active till yet." });
     }
 
-    // **Check if the user is already logged in from a different IP**
-    if (user.loggedInIP && user.loggedInIP !== userIP) {
-      return res
-        .status(403)
-        .json({ message: "You are already logged in from another IP." });
-    }
-
     // Generate a JWT token
     const token = generateToken({ id: user._id, role: user.role });
 
-    // **Update the user's logged-in IP in the database**
+    // Keep one active session marker but allow re-login from new networks/devices.
     user.loggedInIP = userIP;
     await user.save();
 

@@ -8,9 +8,11 @@ import { FaLevelUpAlt } from "react-icons/fa";
 import { BsClock } from "react-icons/bs";
 import { BsPerson } from "react-icons/bs";
 import { Card } from "@/components/ui/card";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
 import { getCourseById } from "@/services/courseService";
+import { confirmStripeCheckoutSession } from "@/services/paymentService";
+import { useToast } from "@/hooks/use-toast";
 import BuyNowButton from "./Payment Card Button/BuyNowButton";
 import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
@@ -20,6 +22,8 @@ import GooglePayButton from "@google-pay/button-react";
 
 function CourseDetails() {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { toast } = useToast();
   const { loggedinUser } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -63,6 +67,40 @@ function CourseDetails() {
       fetchCourse();
     }
   }, [id]);
+
+  useEffect(() => {
+    const ok = searchParams.get("stripe_success");
+    const sessionId = searchParams.get("session_id");
+    if (ok !== "1" || !sessionId || !loggedinUser?.token) return;
+
+    let active = true;
+    (async () => {
+      try {
+        await confirmStripeCheckoutSession(sessionId, loggedinUser.token);
+        if (!active) return;
+        toast({
+          title: "Payment successful",
+          description: "You are now enrolled in this course.",
+          className: "bg-green-600 text-white",
+        });
+        setSearchParams({}, { replace: true });
+        fetchCourse();
+      } catch (e) {
+        if (!active) return;
+        const msg =
+          e.response?.data?.error ||
+          e.response?.data?.message ||
+          e.message ||
+          "Could not complete enrollment.";
+        toast({ title: "Enrollment", description: msg, variant: "destructive" });
+        setSearchParams({}, { replace: true });
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [searchParams, loggedinUser?.token]);
 
   if (loading) return <p>Loading course details...</p>;
   if (error) return <p>{error}</p>;

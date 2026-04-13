@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
+import ThumbnailUploader from "./Subject/AddContent/TumbnailUploader";
 
 const ClassForm = ({
   formData,
@@ -11,6 +12,9 @@ const ClassForm = ({
   onCancel,
   isLoading,
   isEditing,
+  thumbnailFile = null,
+  setThumbnailFile = () => {},
+  formKey,
 }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +58,25 @@ const ClassForm = ({
           min="0"
           step="0.01"
           className="border-gray-300"
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Thumbnail</label>
+        {formData.thumbnail && !thumbnailFile ? (
+          <div className="mt-1 flex items-center gap-3 rounded-md border border-gray-200 bg-gray-50/80 p-3">
+            <img
+              src={formData.thumbnail}
+              alt="Current class thumbnail"
+              className="h-16 w-16 rounded-md object-cover border border-gray-200"
+            />
+            <p className="text-xs text-gray-600">
+              Current image. Drop a new file below to replace it.
+            </p>
+          </div>
+        ) : null}
+        <ThumbnailUploader
+          key={formKey ?? "new-class"}
+          setThumbnailFile={setThumbnailFile}
         />
       </div>
       <DialogFooter className="mt-4">

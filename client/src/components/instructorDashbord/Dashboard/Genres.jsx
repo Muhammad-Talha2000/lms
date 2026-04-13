@@ -19,7 +19,7 @@ import React from "react";
 
 const Genres = ({ title, description, Icon, padding }) => {
   return (
-    <div className="flex items-center justify-start py-2 min-w-48 bg-[#e6f6f5] rounded-lg gap-4 px-4">
+    <div className="flex items-center justify-start py-2 sm:py-3 min-w-0 w-full bg-[#e6f6f5] rounded-lg gap-2 sm:gap-4 px-2 sm:px-4">
       {/* Display icon only if provided */}
       <div className={`bg-white rounded-full ${padding ? `p-${padding}` : ""}`}>
         {Icon && <Icon className="w-6 h-6 text-orange-500" />}

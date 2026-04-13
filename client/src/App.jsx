@@ -24,6 +24,9 @@ import InstructorsClassessPage from "./pages/InstructorsClassessPage";
 import AdminMeetings from "./pages/AdminMeetings";
 import BlogsPage from "./pages/BlogsPage";
 import BlogDetails from "./pages/BlogDetails";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
+import TeachWithUs from "./pages/TeachWithUs";
 
 // hello
 
@@ -44,6 +47,9 @@ const App = () => {
         { path: "login", element: <Login /> },
         { path: "personal-details", element: <PersonalDetailsPage /> },
         { path: "contact", element: <Contact /> },
+        { path: "about", element: <About /> },
+        { path: "careers", element: <Careers /> },
+        { path: "teach-with-us", element: <TeachWithUs /> },
         { path: "courses", element: <FeaturedCoursesPage /> },
         { path: "classess", element: <FeaturedClassess /> },
         { path: "faqs", element: <Faqs /> },

@@ -17,6 +17,7 @@ const SidebarAccordians = ({
   setSelectedCard,
   subjectId,
   refetchSubjectDetails,
+  onItemSelect,
 }) => {
   const { type, data } = content;
   const { loggedinUser } = useSelector((state) => state.auth);
@@ -26,29 +27,34 @@ const SidebarAccordians = ({
     <div>
       <Accordion collapsible type="single">
         <AccordionItem value={type}>
-          <AccordionTrigger>
-            <div className="flex items-center gap-2">
-              {type}
-              <span className="text-xs text-gray-500">({data?.length})</span>
+          <AccordionTrigger className="min-w-0 text-left hover:no-underline">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+              <span className="break-words">{type}</span>
+              <span className="shrink-0 text-xs text-gray-500">
+                ({data?.length ?? 0})
+              </span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
             <ul className="space-y-2">
               {data?.map((item, index) => (
                 <Card
-                  className="p-2 px-4 cursor-pointer"
+                  className="cursor-pointer p-2 px-3 sm:px-4"
                   key={index}
                   title={item.name || item.title}
                   onClick={() => {
                     setSelectedCard({ ...item, type });
                     setView("card");
+                    onItemSelect?.();
                   }}
                 >
-                  <li className="font-semibold">{item.name || item.title}</li>
+                  <li className="break-words text-sm font-semibold leading-snug sm:text-base">
+                    {item.name || item.title}
+                  </li>
                 </Card>
               ))}
             </ul>
-            {loggedinUser.user.role === "instructor" && (
+            {loggedinUser?.user?.role === "instructor" && (
               <Button
                 onClick={() => setIsModalOpen(true)}
                 className="w-full mt-4 bg-orange-50 text-orange-500 hover:bg-orange-100 border-2 border-dashed border-orange-200"

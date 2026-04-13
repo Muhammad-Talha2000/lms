@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { BookOpen } from "lucide-react";
 import SidebarAccordians from "./SidebarAccordians";
 
 const SubjectSidebar = ({
@@ -6,19 +7,34 @@ const SubjectSidebar = ({
   setView,
   setSelectedCard,
   refetchSubjectDetails,
+  onItemSelect,
 }) => {
+  const [thumbError, setThumbError] = useState(false);
+
   return (
-    <div className="bg-gray-100 w-80 p-4 h-screen overflow-y-scroll custom-scrollbar">
-      <div className="space-y-2">
-        <h1 className="font-bold text-xl text-orange-500">{subject.name}</h1>
-        <img
-          src={subject.thumbnail}
-          alt={subject.name}
-          className="rounded-lg w-full h-48 object-cover"
-        />
+    <div className="h-full min-h-0 w-full min-w-0 rounded-xl border border-white/10 bg-white/95 p-3 shadow-sm backdrop-blur-sm sm:p-4 lg:w-80">
+      <div className="space-y-3">
+        <h1 className="break-words text-lg font-bold leading-tight text-orange-700 sm:text-xl">
+          {subject.name}
+        </h1>
+        <div className="overflow-hidden rounded-xl border border-gray-200/80 bg-white shadow-sm">
+          {subject.thumbnail && !thumbError ? (
+            <img
+              src={subject.thumbnail}
+              alt=""
+              className="h-40 w-full object-cover sm:h-48"
+              onError={() => setThumbError(true)}
+            />
+          ) : (
+            <div className="flex h-40 flex-col items-center justify-center gap-2 bg-gradient-to-br from-blue-50 to-slate-100 text-gray-400 sm:h-48">
+              <BookOpen className="h-12 w-12" strokeWidth={1.25} />
+              <span className="text-xs text-gray-500">No cover image</span>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="my-4">
+      <div className="my-4 min-w-0 space-y-1 pb-6">
         <SidebarAccordians
           type="Content Library"
           content={{ data: subject.contentLibrary, type: "Content" }}
@@ -26,6 +42,7 @@ const SubjectSidebar = ({
           setSelectedCard={setSelectedCard}
           subjectId={subject._id}
           refetchSubjectDetails={refetchSubjectDetails}
+          onItemSelect={onItemSelect}
         />
         <SidebarAccordians
           type="lessons"
@@ -34,6 +51,7 @@ const SubjectSidebar = ({
           setSelectedCard={setSelectedCard}
           subjectId={subject._id}
           refetchSubjectDetails={refetchSubjectDetails}
+          onItemSelect={onItemSelect}
         />
         <SidebarAccordians
           type="Assignments"
@@ -42,6 +60,7 @@ const SubjectSidebar = ({
           setSelectedCard={setSelectedCard}
           subjectId={subject._id}
           refetchSubjectDetails={refetchSubjectDetails}
+          onItemSelect={onItemSelect}
         />
         <SidebarAccordians
           type="Quizzes"
@@ -50,6 +69,7 @@ const SubjectSidebar = ({
           setSelectedCard={setSelectedCard}
           subjectId={subject._id}
           refetchSubjectDetails={refetchSubjectDetails}
+          onItemSelect={onItemSelect}
         />
       </div>
     </div>

@@ -13,13 +13,13 @@ import { Card } from "@/components/ui/card";
 
 const ProfileInfo = ({ user, handleEditProfile, isLoading }) => {
   return (
-    <Card className="border-2 border-l-0 rounded-lg p-6 ">
+    <Card className="w-full min-w-0 border-2 border-l-0 rounded-lg p-4 sm:p-6 bg-card shadow-sm">
       {/* Profile Image */}
       <div className="flex  flex-col items-center">
         <img
           src={user?.profileImage}
           alt="Profile"
-          className="w-16 h-16 rounded-full mb-4"
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-4 object-cover"
         />
         <h3 className="text-lg font-semibold">Personal Details</h3>
         <hr className="w-full border-t border-gray-300 mt-4 mb-4" />
@@ -61,7 +61,7 @@ const ProfileInfo = ({ user, handleEditProfile, isLoading }) => {
         <button
           onClick={handleEditProfile}
           disabled={isLoading}
-          className="flex items-center justify-center gap-2 w-full px-4 py-2 text-orange-500 bg-orange-100 rounded-lg font-semibold hover:bg-orange-200 disabled:opacity-50"
+          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm sm:text-base text-primary bg-primary/10 rounded-lg font-semibold hover:bg-primary/15 disabled:opacity-50"
         >
           <FaShareAlt />
           {isLoading ? "Loading..." : "Edit Profile"}
@@ -72,10 +72,14 @@ const ProfileInfo = ({ user, handleEditProfile, isLoading }) => {
 };
 
 const InfoField = ({ icon: Icon, label, value }) => (
-  <div className="flex items-center gap-2 border-t border-gray-300 pt-4 first:border-t-0 first:pt-0">
-    <Icon className="text-orange-500" />
-    <span className="font-semibold">{label}:</span>
-    <span>{value}</span>
+  <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 border-t border-border pt-4 first:border-t-0 first:pt-0 min-w-0">
+    <div className="flex items-center gap-2 shrink-0">
+      <Icon className="text-primary h-4 w-4 shrink-0" />
+      <span className="font-semibold text-foreground">{label}:</span>
+    </div>
+    <span className="text-muted-foreground break-words min-w-0 sm:ml-6">
+      {value}
+    </span>
   </div>
 );
 

@@ -28,18 +28,34 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
-// Middleware
-// app.use(
-//   cors({
-//     origin: "https://lms-corporateprism.vercel.app",
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-//     credentials: true,
-//   })
-// );
+// Middleware — allow local dev (Vite / CRA) and optional production origins
+const corsAllowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://lms-corporateprism.vercel.app",
+  ...(process.env.CORS_ORIGINS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+];
+const corsOriginSet = new Set(corsAllowedOrigins);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (corsOriginSet.has(origin)) return callback(null, true);
+      return callback(null, false);
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Client-IP",
+      "Accept",
+    ],
     credentials: true,
   })
 );
@@ -118,7 +134,7 @@ app.post("/send-email", (req, res) => {
 
   const mailOptions = {
     from: email,
-    to: "codequesolutions@gmail.com", // Replace with the recipient's email
+    to: "smartflowtechofficial@gmail.com", // Replace with the recipient's email
     subject: `Contact Form Submission: ${subject}`,
     text: `You have a new message from ${name} (${email}):\n\n${message}`,
   };
@@ -137,4 +153,9 @@ app.post("/send-email", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}✅✅✅`));
+// Vercel serverless provides the handler via default export; do not bind a port there.
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}✅✅✅`));
+}
+
+export default app;

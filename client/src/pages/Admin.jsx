@@ -120,6 +120,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import DefaultLayout from "@/components/layout/DefaultLayout";
 
 const adminMenuItems = [
   { name: "User Management", icon: Users },
@@ -172,36 +173,36 @@ export default function Admin() {
   };
 
   return (
-    <>
-      <h1 className="font-bold text-orange-500 text-4xl text-center my-12">
+    <DefaultLayout>
+      <h1 className="font-bold text-orange-500 text-2xl sm:text-3xl md:text-4xl text-center my-6 sm:my-10">
         Admin Dashboard
       </h1>
-      <div className="my-8 flex justify-end pr-12">
+      <div className="mb-6 sm:mb-8 flex justify-center sm:justify-end px-4 sm:px-8 lg:px-12">
         <Button
           onClick={handleLogout}
           disabled={logoutLoading}
-          className="bg-red-500 hover:bg-red-600 "
+          className="bg-red-500 hover:bg-red-600 w-full sm:w-auto"
         >
           {logoutLoading ? "Logging Out..." : "Logout"}
         </Button>
       </div>
-      <div className="w-full mx-auto flex gap-10">
+      <div className="w-full mx-auto flex flex-col lg:flex-row gap-6 lg:gap-10 px-4 sm:px-6 lg:px-8 pb-6">
         {/* Sidebar and Logout Button */}
-        <div className="flex flex-col items-center">
-          <div className="h-[400px] flex items-center justify-center sticky top-[12%]">
+        <div className="flex w-full flex-col items-center lg:w-auto lg:items-start">
+          <div className="flex w-full items-center justify-center rounded-2xl bg-enterprise-navy p-3 shadow-lg lg:w-auto lg:justify-start lg:sticky lg:top-28">
             <Sidebar
               role="Admin"
               headerTitle="Admin"
               menuItems={adminMenuItems}
               onSelect={(menu) => setSelectedMenuTab(menu)}
-              className="w-6/12"
+              className="w-full lg:w-auto"
               notificationCount={notificationCount}
             />
           </div>
         </div>
 
-        {/* Main Content Section */}
-        <main className="flex-1 flex flex-col gap-8 h-full overflow-y-auto no-scrollbar pr-2">
+        {/* Admin tab content (not a second <main> — DefaultLayout already provides one) */}
+        <div className="w-full flex-1 flex flex-col gap-6 lg:gap-8 overflow-x-hidden">
           {selectedMenuTab === "User Management" && <UserManagement />}
           {selectedMenuTab === "Course Management" && <CourseManagement />}
           {selectedMenuTab === "Class Management" && <ClassManagement />}
@@ -211,8 +212,8 @@ export default function Admin() {
             <Notifications setNotificationCount={setNotificationCount} />
           )}
           {selectedMenuTab === "Platform Settings" && <PlatformSettings />}
-        </main>
+        </div>
       </div>
-    </>
+    </DefaultLayout>
   );
 }

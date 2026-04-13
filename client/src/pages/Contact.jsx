@@ -56,14 +56,14 @@ const ContactUs = () => {
 
       const result = await response.json();
       if (result.success) {
-        setStatus("Your message has been sent successfully!");
+        setStatus("Thanks! Your note is on its way to our team.");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        setStatus("Failed to send your message. Please try again.");
+        setStatus("We could not deliver that message—please try again shortly.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setStatus("An error occurred. Please try again.");
+      setStatus("Something went wrong on our side. Please retry in a moment.");
     } finally {
       setLoading(false);
     }
@@ -73,12 +73,12 @@ const ContactUs = () => {
 
   return (
     <DefaultLayout>
-      <PageHeader title="Contact Us" breadcrumb="contact" />
+      <PageHeader title="Contact our learning team" breadcrumb="Contact" />
 
       <div className="flex flex-wrap justify-center gap-8 p-4 lg:p-8">
-        {/* Left Section: Leave A Reply */}
+        {/* Left Section: message form */}
         <Card className="w-full lg:w-[60%] bg-white p-6 shadow-md rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Leave A Reply</h2>
+          <h2 className="text-xl font-bold mb-4">Send us a message</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
               {/* Name Input */}
@@ -144,16 +144,16 @@ const ContactUs = () => {
                 required
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a subject" />
+                  <SelectValue placeholder="Choose a topic" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Select Subject</SelectLabel>
+                    <SelectLabel>Topic</SelectLabel>
                     <SelectItem value="General Inquiry">
-                      General Inquiry
+                      General question
                     </SelectItem>
-                    <SelectItem value="support">Support</SelectItem>
-                    <SelectItem value="feedback">Feedback</SelectItem>
+                    <SelectItem value="support">Technical support</SelectItem>
+                    <SelectItem value="feedback">Product feedback</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -187,16 +187,16 @@ const ContactUs = () => {
               // onClick={(e) => handleSubmit(e, "Submit")}
               disabled={loading}
             >
-              {loading ? "Submitting..." : "Submit Message"}
+              {loading ? "Sending…" : "Send message"}
               {/* Submit Message */}
             </Button>
           </form>
           {status && <p className="text-center  mt-4">{status}</p>}
         </Card>
 
-        {/* Right Section: Office Information */}
+        {/* Right Section: studio details */}
         <Card className="w-full lg:w-[35%] bg-white p-6 shadow-md rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Office Information</h2>
+          <h2 className="text-xl font-bold mb-4">Studio & contact details</h2>
           <ul className="space-y-6">
             <li className="flex items-center gap-4">
               <Card className="shadow-md rounded-lg p-3">
@@ -204,13 +204,13 @@ const ContactUs = () => {
               </Card>
               <div>
                 <p className="font-medium text-sm sm:text-base lg:text-lg">
-                  Phone Number & Email
+                  Phone & email
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
                   (123) 123-1234
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
-                  info@corporateprime.com
+                  smartflowtechofficial@gmail.com
                 </p>
               </div>
             </li>
@@ -220,7 +220,7 @@ const ContactUs = () => {
               </Card>
               <div>
                 <p className="font-medium text-sm sm:text-base lg:text-lg">
-                  Our Office Address
+                  Headquarters
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
                   1234 ABC Road, Karachi, Pakistan
@@ -233,7 +233,7 @@ const ContactUs = () => {
               </Card>
               <div>
                 <p className="font-medium text-sm sm:text-base lg:text-lg">
-                  Official Work Time
+                  Support hours
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
                   Monday - Friday: 09:00 - 20:00

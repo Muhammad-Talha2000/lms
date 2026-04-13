@@ -9,7 +9,7 @@ import {
   convertCourseScheduleToUserTime,
 } from "../utils/timeZoneHelper.js";
 import Notification from "../models/Notification.js";
-import { scheduleOneToOneMeeting } from "./oneToOneMeetingControllers.js";
+import { completeStudentEnrollment } from "../services/studentEnrollmentService.js";
 
 export const createCourse = async (req, res) => {
   const {
@@ -559,79 +559,19 @@ export const enrollStudent = async (req, res) => {
     const { courseId } = req.params;
     const { studentId, selectedSchedule } = req.body;
 
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
+    const result = await completeStudentEnrollment({
+      courseId,
+      studentId,
+      selectedSchedule,
+    });
+
+    if (!result.ok) {
+      return res.status(result.status).json({ message: result.message });
     }
-
-    if (course.enrolledStudents.includes(studentId)) {
-      return res
-        .status(400)
-        .json({ message: "Already enrolled in this course" });
-    }
-
-    let scheduleUpdated = false; // Additional line for scheduling
-
-    if (course.courseType === "One-to-One" && selectedSchedule) {
-      let scheduleFound = false;
-
-      for (const scheduleBlock of course.oneToOneSchedules) {
-        for (const schedule of scheduleBlock.schedules) {
-          if (
-            schedule.startTime === selectedSchedule?.startTime &&
-            schedule.endTime === selectedSchedule?.endTime
-          ) {
-            scheduleFound = true;
-
-            if (schedule.isBooked || schedule.studentId) {
-              return res
-                .status(400)
-                .json({ message: "This schedule is already taken." });
-            }
-
-            schedule.studentId = studentId;
-            schedule.isBooked = true;
-            scheduleUpdated = true; // Additional line for scheduling
-          }
-        }
-      }
-
-      if (!scheduleFound) {
-        return res.status(400).json({ message: "Invalid schedule selection." });
-      }
-    }
-
-    course.enrolledStudents.push(studentId);
-    await course.save();
-
-    const student = await Student.findById(studentId);
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-    student.coursesEnrolled.push(courseId);
-    await student.save();
-
-    // ================ Additional Part ===================
-
-    if (scheduleUpdated) {
-      try {
-        await scheduleOneToOneMeeting(course);
-      } catch (scheduleError) {
-        console.error("Failed to schedule meeting:", scheduleError);
-        // Continue with enrollment even if scheduling fails
-      }
-    }
-
-    // ====================================================
-
-    // Return the updated course data
-    const updatedCourse = await Course.findById(courseId)
-      .populate("enrolledStudents")
-      .populate("instructor");
 
     res.status(200).json({
       message: "Enrollment successful!",
-      course: updatedCourse,
+      course: result.course,
     });
   } catch (error) {
     console.error("Enrollment error:", error);
@@ -671,15 +611,16 @@ export const getDiscussions = async (req, res) => {
   try {
     const { courseId } = req.params;
 
-    const course = await Course.findById(courseId)
-      .populate({
-        path: "discussions.author",
-        select: "name role",
-      })
-      .populate({
-        path: "discussions.replies.author",
-        select: "name role",
-      });
+    const course = await Course.findById(courseId).populate({
+      path: "discussions",
+      populate: [
+        { path: "author", select: "name role" },
+        {
+          path: "replies",
+          populate: { path: "author", select: "name role" },
+        },
+      ],
+    });
 
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
@@ -687,8 +628,11 @@ export const getDiscussions = async (req, res) => {
 
     res.status(200).json(course.discussions);
   } catch (error) {
-    console.error("Error toggling publish status:", error);
-    res.status(500).json({ message: "Failed to update publish status" });
+    console.error("Error fetching discussions:", error);
+    res.status(500).json({
+      message: "Failed to fetch discussions",
+      error: error.message,
+    });
   }
 };
 

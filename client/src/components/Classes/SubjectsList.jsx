@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa";
 import AddSubjectModal from "./Subject/AddSubjectModal";
+import SubjectCardItem from "./SubjectCardItem";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -11,7 +11,7 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loggedinUser } = useSelector((state) => state.auth);
   const { toast } = useToast();
-  const role = loggedinUser.user.role;
+  const role = loggedinUser?.user?.role;
 
   const navigate = useNavigate();
 
@@ -40,9 +40,10 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
         return; // Prevent further execution
       }
 
+      const subInst = subject.instructor?._id ?? subject.instructor;
       if (
         role === "instructor" &&
-        subject.instructor !== loggedinUser.user._id
+        subInst?.toString() !== loggedinUser?.user?._id?.toString()
       ) {
         toast({
           title: "Error",
@@ -63,70 +64,62 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
   };
 
   return (
-    <div className="my-6 border-b pb-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Subjects</h2>
-        {role && role === "admin" && (
+    <section className="my-8 min-w-0 border-b border-gray-100 pb-10">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+            Subjects
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Open a subject to view lessons and materials.
+          </p>
+        </div>
+        {role === "admin" && (
           <Button
             onClick={handleOpenModal}
-            className="mb-4 bg-orange-500 hover:bg-orange-600 gap-2"
+            className="h-11 shrink-0 gap-2 rounded-xl bg-orange-500 px-5 hover:bg-orange-600 w-full sm:w-auto"
           >
             <FaPlus />
-            Add Subject
+            Add subject
           </Button>
         )}
       </div>
-      <Card className="shadow-md border border-gray-200">
-        {subjects.length !== 0 && (
-          <CardContent className="p-4 grid grid-cols-2 gap-4">
-            {subjects.map((subject, index) => {
-              const isInstructor =
-                subject?.instructor === loggedinUser?.user?._id; // ✅ Define isInstructor here
 
-              return (
-                <div
-                  key={subject.id || index}
-                  onClick={() => handleNavigate(subject)}
-                  className={`flex items-center p-3 gap-4 rounded-lg transition-colors cursor-pointer mb-3
-              ${
-                isInstructor
-                  ? "bg-green-100 hover:bg-green-200"
-                  : "bg-gray-100 hover:bg-gray-200"
-              }
-            `}
-                >
-                  <div className="w-20 h-20 flex-shrink-0 overflow-hidden rounded-md">
-                    <img
-                      src={
-                        subject.thumbnail ||
-                        "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png"
-                      }
-                      alt={subject.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+      {subjects.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/80 px-6 py-12 text-center">
+          <p className="text-sm font-medium text-gray-600">
+            No subjects in this class yet.
+          </p>
+          <p className="mt-1 text-xs text-gray-500">
+            {role === "admin"
+              ? "Use Add subject to create one."
+              : "Check back later."}
+          </p>
+        </div>
+      ) : (
+        <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-2 min-w-0 p-0 m-0">
+          {subjects.map((subject, index) => {
+            const inst = subject?.instructor?._id ?? subject?.instructor;
+            const isInstructor =
+              inst?.toString() === loggedinUser?.user?._id?.toString();
 
-                  <div className="flex flex-col">
-                    <p
-                      className={`text-lg font-bold ${
-                        isInstructor ? "text-black" : "text-gray-900"
-                      }`}
-                    >
-                      {subject.name}
-                    </p>
-                    <p
-                      className="text-sm text-gray-600"
-                      dangerouslySetInnerHTML={{ __html: subject?.description }}
-                    ></p>
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        )}
-      </Card>
+            return (
+              <li
+                key={subject._id || subject.id || index}
+                className="min-w-0"
+              >
+                <SubjectCardItem
+                  subject={subject}
+                  isInstructor={isInstructor}
+                  onSelect={() => handleNavigate(subject)}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
-      {isModalOpen && (
+      {isModalOpen && loggedinUser?.token && (
         <AddSubjectModal
           onClose={handleCloseModal}
           classId={classId}
@@ -134,7 +127,7 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
           onSubjectCreated={handleSubjectCreated}
         />
       )}
-    </div>
+    </section>
   );
 };
 

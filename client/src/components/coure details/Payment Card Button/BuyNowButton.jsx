@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ScheduleSelector from "../ScheduleSelector";
-import { createPaymentIntent } from "@/services/paymentService";
+import { createCheckoutSession } from "@/services/paymentService";
 
 const BuyNowButton = ({ courseId, onEnrollmentSuccess }) => {
   const navigate = useNavigate();
@@ -49,16 +49,37 @@ const BuyNowButton = ({ courseId, onEnrollmentSuccess }) => {
   };
 
   const generatePaymentLink = async () => {
+    const token = loggedinUser?.token;
+    if (!token) {
+      toast({
+        title: "Error",
+        description: "Please log in again to continue to checkout.",
+        variant: "destructive",
+      });
+      return;
+    }
     try {
-      const res = await createPaymentIntent(paymentPayload);
-
-      const paylmentLink = res[1].Click2Pay;
-
-      if (paylmentLink) {
-        window.open(paylmentLink, "_blank");
+      const res = await createCheckoutSession(paymentPayload, token);
+      if (res?.url) {
+        window.location.assign(res.url);
+        return;
       }
+      toast({
+        title: "Checkout unavailable",
+        description: "No payment URL was returned. Try again later.",
+        variant: "destructive",
+      });
     } catch (error) {
-      console.log("Error while generating payment link", error);
+      const msg =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message ||
+        "Could not start checkout.";
+      toast({
+        title: "Payment",
+        description: msg,
+        variant: "destructive",
+      });
     }
   };
 

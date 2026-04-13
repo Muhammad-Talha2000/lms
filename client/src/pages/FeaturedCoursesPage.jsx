@@ -9,7 +9,7 @@ const FeaturedCoursesPage = () => {
   return (
     <DefaultLayout>
       <div className=" mx-auto flex items-center justify-center flex-col">
-        <PageHeader title="Feature Course" breadcrumb="course" />
+        <PageHeader title="Course catalog & highlights" breadcrumb="Courses" />
         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         <FeaturedCourses width={"100%"} searchQuery={searchQuery} />
       </div>

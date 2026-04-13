@@ -4,6 +4,20 @@ import { FaBook, FaUser } from "react-icons/fa";
 import { MdAssignmentTurnedIn, MdQuiz } from "react-icons/md";
 import { Card } from "@/components/ui/card";
 
+const pkrFormat = new Intl.NumberFormat("en-PK", {
+  style: "currency",
+  currency: "PKR",
+  maximumFractionDigits: 0,
+});
+
+function formatCoursePrice(raw) {
+  const n = Number(raw);
+  if (raw == null || raw === "" || !Number.isFinite(n) || n === 0) {
+    return "Free";
+  }
+  return pkrFormat.format(n);
+}
+
 const CourseCard = ({ courses }) => {
   return (
     <div>
@@ -53,15 +67,14 @@ const CourseCard = ({ courses }) => {
               {/* Instructor Details */}
 
               {/* Price and Manage Course button */}
-              <div className="flex items-center justify-between mt-4 border-t-2 border-[#e8f0f3] pt-4">
-                <p className="font-bold text-gray-800">
-                  Rs. {course?.price || "Free"}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4 border-t-2 border-[#e8f0f3] pt-4 min-w-0">
+                <p className="font-bold text-gray-800 shrink-0">
+                  {formatCoursePrice(course?.price)}
                 </p>
 
-                {/* Manage Course Button */}
                 <Link
-                  to={`/manageCourse/${course._id}`} // Link to manage course page
-                  className="hover:bg-orange-100 border-2 border-orange-100 py-2 px-4 rounded-full font-medium"
+                  to={`/manageCourse/${course._id}`}
+                  className="hover:bg-orange-100 border-2 border-orange-100 py-2 px-4 rounded-full font-medium text-center sm:text-left whitespace-nowrap"
                 >
                   Manage Course
                 </Link>

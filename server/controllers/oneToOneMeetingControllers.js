@@ -533,22 +533,46 @@ export const getOneToOneMeetings = async (req, res) => {
       courseType: "One-to-One",
     });
     const scheduledMeetings = [];
+    const schedulingErrors = [];
 
     for (const course of courses) {
-      await clearExpiredOneToOneSession(course);
-      await scheduleOneToOneMeeting(course);
-      if (course.liveSession?.isActive) {
-        scheduledMeetings.push({
-          courseId: course._id,
-          courseName: course.name,
-          meetingId: course.liveSession.meetingId,
-          meetingLink: course.liveSession.meetingLink,
-          startTime: course.liveSession.startTime,
-          duration: course.liveSession.duration,
-          topic: course.liveSession.topic,
-          bookingReference: course.liveSession.bookingReference,
+      try {
+        await clearExpiredOneToOneSession(course);
+        await scheduleOneToOneMeeting(course);
+        if (course.liveSession?.isActive) {
+          scheduledMeetings.push({
+            courseId: course._id,
+            courseName: course.name,
+            meetingId: course.liveSession.meetingId,
+            meetingLink: course.liveSession.meetingLink,
+            startTime: course.liveSession.startTime,
+            duration: course.liveSession.duration,
+            topic: course.liveSession.topic,
+            bookingReference: course.liveSession.bookingReference,
+          });
+        }
+      } catch (courseError) {
+        console.error(
+          `Error scheduling one-to-one meeting for course ${course._id}:`,
+          courseError
+        );
+        schedulingErrors.push({
+          courseId: course._id.toString(),
+          message: courseError?.message || "Failed to schedule one-to-one meeting",
         });
       }
+    }
+
+    const hasAuthGrantError = schedulingErrors.some((err) =>
+      err.message?.includes("invalid_grant")
+    );
+
+    if (scheduledMeetings.length === 0 && hasAuthGrantError) {
+      return res.status(502).json({
+        message:
+          "Google Calendar authentication failed (invalid_grant). Reconnect Google credentials and refresh token.",
+        code: "GOOGLE_AUTH_INVALID_GRANT",
+      });
     }
 
     res.json(scheduledMeetings);

@@ -113,16 +113,16 @@ const DetailView = ({ subject }) => {
   const canViewInstructor = role === "admin" || role === "student";
 
   return (
-    <div>
-      <div className="pb-4">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold text-gray-800">
+    <div className="min-w-0 max-w-full">
+      <div className="border-b border-gray-100 pb-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 flex-1 text-xl font-bold leading-tight text-gray-800 sm:text-2xl break-words">
             {isEditing ? (
               <Input
                 name="name"
                 value={updatedSubject.name}
                 onChange={handleInputChange}
-                className="focus:ring-orange-500 focus:border-orange-500"
+                className="w-full focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Subject Name"
               />
             ) : (
@@ -132,16 +132,16 @@ const DetailView = ({ subject }) => {
           {canEdit && !isEditing && (
             <Button
               onClick={() => setIsEditing(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full shrink-0 bg-orange-500 text-white hover:bg-orange-600 sm:w-auto"
               size="sm"
             >
-              <Edit className="w-4 h-4 mr-2" /> Edit
+              <Edit className="mr-2 h-4 w-4" /> Edit
             </Button>
           )}
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="space-y-5 py-4 sm:space-y-6 sm:py-6">
         {/* Thumbnail */}
         <div className="mb-6 w-full">
           <Label className="text-sm font-medium text-gray-600 mb-2 block">
@@ -230,12 +230,12 @@ const DetailView = ({ subject }) => {
             </div>
           ) : (
             <div
-              className="prose max-w-none bg-white p-4 rounded-lg border border-gray-200"
+              className="max-w-none overflow-x-auto rounded-xl border border-gray-200 bg-white p-4 text-sm leading-relaxed sm:text-base [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full [&_pre]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto"
               dangerouslySetInnerHTML={{
                 __html:
                   subject.description || "<p>No description available.</p>",
               }}
-            ></div>
+            />
           )}
         </div>
 
@@ -258,17 +258,17 @@ const DetailView = ({ subject }) => {
 
         {/* Action Buttons (Only Admin Can Edit) */}
         {canEdit && isEditing && (
-          <div className="flex justify-end gap-2 mt-4">
+          <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <Button
               onClick={handleCancel}
               variant="outline"
-              className="border-gray-300 text-gray-700 hover:bg-gray-100"
+              className="w-full border-gray-300 text-gray-700 hover:bg-gray-100 sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSaveChanges}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full bg-orange-500 text-white hover:bg-orange-600 sm:w-auto"
               disabled={isLoading}
             >
               {isLoading ? (

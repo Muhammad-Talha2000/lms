@@ -16,20 +16,20 @@ export default function NotFound() {
       >
         <BookOpen className="w-16 h-16 text-orange-500 mx-auto" />
         <h1 className="text-4xl font-bold text-orange-500 mt-4">
-          Oops! Page Not Found
+          This page is unavailable
         </h1>
         <p className="text-gray-500 mt-2">
-          Looks like you took a wrong turn in your learning journey.
+          The link may be outdated or the lesson may have moved—let’s get you back on track.
         </p>
         <div className="mt-6 space-x-4">
           <Button onClick={() => navigate(-1)} variant="outline">
-            <BookOpen className="w-5 h-5 mr-2" /> Go Back
+            <BookOpen className="w-5 h-5 mr-2" /> Previous screen
           </Button>
           <Button
             className="bg-orange-500 hover:bg-orange-600"
             onClick={() => navigate("/")}
           >
-            <Home className="w-5 h-5 mr-2" /> Return Home
+            <Home className="w-5 h-5 mr-2" /> Go to homepage
           </Button>
         </div>
       </motion.div>

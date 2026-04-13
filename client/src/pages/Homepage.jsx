@@ -11,10 +11,10 @@ import React from "react";
 const Homepage = () => {
   return (
     <DefaultLayout>
-      <div className="w-[90%] mx-auto">
+      <div className="w-full max-w-full overflow-x-hidden box-border px-3 sm:px-4 md:px-6">
         <Hero />
         <SuccessStories />
-        <FeaturedCourses bgColor={"#e8f0f3"} width={"90%"} />
+        <FeaturedCourses bgColor={"#e8f0f3"} />
         <StatsSection />
         <PerformanceDashboard />
         <InstructorsDetails />

@@ -275,8 +275,9 @@ import { uploadImageToCloudinary } from "@/services/cloudinaryService";
 import ProfileInfo from "./ProfileInfo";
 import EditProfileModal from "./EditProfileModal";
 import { setLoggedinUser } from "@/redux/authSlice";
+import { useToast } from "@/hooks/use-toast";
 
-const PersonalDetails = () => {
+const PersonalDetails = ({ onNavigate }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
   const [profileData, setProfileData] = React.useState(null);
@@ -284,6 +285,7 @@ const PersonalDetails = () => {
   const { loggedinUser } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
   const [formData, setFormData] = React.useState({
     name: "",
@@ -343,6 +345,7 @@ const PersonalDetails = () => {
           role: data.user.role || "",
         });
         setShowModal(true);
+        onNavigate?.();
       }
     } catch (error) {
       setError("Failed to fetch profile");
@@ -387,7 +390,11 @@ const PersonalDetails = () => {
       setShowModal(false);
     } catch (error) {
       setError("Failed to update profile");
-      toast.error("Failed to update profile");
+      toast({
+        title: "Update failed",
+        description: "Could not save your profile. Try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -1,124 +1,91 @@
 import React from "react";
-import { Phone, Facebook, Instagram, Youtube } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Phone } from "lucide-react";
+
+const FooterLink = ({ to, children }) => (
+  <li>
+    <Link
+      to={to}
+      className="flex items-center text-gray-200 transition-colors hover:text-orange-400"
+    >
+      <span className="mr-2">→</span>
+      {children}
+    </Link>
+  </li>
+);
 
 const Footer = () => {
   return (
     <footer className="bg-[url('@/assets/footer.png')] bg-cover bg-center w-full text-white py-8">
-      <div className="container mx-auto px-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Get in Touch Column */}
+      <div className="container mx-auto px-4 sm:px-8 lg:px-16">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+          {/* Connect */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 relative">
-              GET IN TOUCH!
-              <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-orange-500 mt-2"></span>
+            <h3 className="relative mb-6 text-lg font-semibold pb-2">
+              Connect with Smartflow
+              <span className="absolute bottom-0 left-0 h-0.5 w-12 bg-orange-500" />
             </h3>
-            <p className="text-gray-300 mb-4">
-              Fusce varius, dolor tempor interdum tristisque bibendum.
+            <p className="mb-4 text-gray-300">
+              Tell us about your learning goals—we reply quickly with tailored program
+              recommendations and onboarding guidance.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2 text-sm sm:text-base">
               <div className="flex items-center">
-                <Phone size={18} className="mr-2" />
-                <span>(123) 123-1234</span>
+                <Phone size={18} className="mr-2 shrink-0" />
+                <a href="tel:+11231231234" className="hover:text-orange-400">
+                  (123) 123-1234
+                </a>
               </div>
-              <p>info@corporateprism.com</p>
+              <p>
+                <a
+                  href="mailto:smartflowtechofficial@gmail.com"
+                  className="hover:text-orange-400 break-all"
+                >
+                  smartflowtechofficial@gmail.com
+                </a>
+              </p>
             </div>
-            <div className="flex space-x-4 mt-4">
-              <Facebook className="w-5 h-5 cursor-pointer hover:text-orange-500" />
-              <Instagram className="w-5 h-5 cursor-pointer hover:text-orange-500" />
-              <Youtube className="w-5 h-5 cursor-pointer hover:text-orange-500" />
-            </div>
+            <p className="mt-4">
+              <Link
+                to="/contact"
+                className="text-sm font-semibold text-orange-400 hover:text-orange-300"
+              >
+                Contact form →
+              </Link>
+            </p>
           </div>
 
-          {/* Company Info Column */}
+          {/* Company */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 relative">
-              COMPANY INFO
-              <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-orange-500 mt-2"></span>
+            <h3 className="relative mb-6 text-lg font-semibold pb-2">
+              Company
+              <span className="absolute bottom-0 left-0 h-0.5 w-12 bg-orange-500" />
             </h3>
             <ul className="space-y-3">
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>About Us
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Resource Center
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Careers
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Instructor
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Become A Teacher
-              </li>
+              <FooterLink to="/about">Who we are</FooterLink>
+              <FooterLink to="/careers">Careers</FooterLink>
+              <FooterLink to="/teach-with-us">Teach with us</FooterLink>
             </ul>
           </div>
 
-          {/* Useful Links Column */}
+          {/* Explore — real app routes only */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 relative">
-              USEFUL LINKS
-              <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-orange-500 mt-2"></span>
+            <h3 className="relative mb-6 text-lg font-semibold pb-2">
+              Explore
+              <span className="absolute bottom-0 left-0 h-0.5 w-12 bg-orange-500" />
             </h3>
             <ul className="space-y-3">
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>All Courses
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Digital Marketing
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Design & Branding
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>Storytelling & Voice Over
-              </li>
-              <li className="hover:text-orange-500 cursor-pointer flex items-center">
-                <span className="mr-2">→</span>News & Blogs
-              </li>
+              <FooterLink to="/courses">Courses</FooterLink>
+              <FooterLink to="/classess">Classes</FooterLink>
+              <FooterLink to="/blogs">Blog</FooterLink>
+              <FooterLink to="/faqs">Help &amp; FAQs</FooterLink>
+              <FooterLink to="/contact">Contact</FooterLink>
             </ul>
-          </div>
-
-          {/* Recent Posts Column */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6 relative">
-              RECENT POST
-              <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-orange-500 mt-2"></span>
-            </h3>
-            <div className="space-y-4">
-              <div className="flex space-x-4">
-                <img
-                  src="https://images.pexels.com/photos/927022/pexels-photo-927022.jpeg"
-                  alt="Post thumbnail"
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div>
-                  <h4 className="font-medium hover:text-orange-500 cursor-pointer">
-                    Where Dreams Find A Home
-                  </h4>
-                  <p className="text-sm text-gray-400">8 Dec, 2024</p>
-                </div>
-              </div>
-              <div className="flex space-x-4">
-                <img
-                  src="https://images.pexels.com/photos/927022/pexels-photo-927022.jpeg"
-                  alt="Post thumbnail"
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div>
-                  <h4 className="font-medium hover:text-orange-500 cursor-pointer">
-                    Where Dreams Find A Home
-                  </h4>
-                  <p className="text-sm text-gray-400">5 Dec, 2024</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-8 pt-4 border-t border-gray-700 text-center text-gray-400">
-          Copyright © 2025 Corporate Prism. All Rights Reserved.
+        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
+          © {new Date().getFullYear()} Smartflow Tech. All rights reserved.
         </div>
       </div>
     </footer>

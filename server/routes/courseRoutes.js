@@ -25,9 +25,6 @@ router.post("/create", authenticateUser, createCourse);
 // Route for getting all the courses
 router.get("/", getCourses);
 
-// Get Course by Id
-router.get("/:id", getCourseById);
-
 // update course
 router.put("/edit/:id", authenticateUser, updateCourse);
 
@@ -89,5 +86,8 @@ router.delete(
   deletePost
 );
 router.patch("/:courseId/publish", authenticateUser, toggleCoursePublish);
+
+// Single-segment course id — must be registered after all "/:param/..." routes
+router.get("/:id", getCourseById);
 
 export default router;

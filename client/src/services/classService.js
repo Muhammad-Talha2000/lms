@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const API_URL = "http://localhost:5000/api/v1/classes"; // Change URL as needed
+const API_URL = `${API_V1_BASE}/classes`;
 
 const ClassService = {
   getClasses: async () => {
@@ -15,6 +16,17 @@ const ClassService = {
   getClassById: async (id) => {
     try {
       const response = await axios.get(`${API_URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getClassesForInstructor: async (token) => {
+    try {
+      const response = await axios.get(`${API_URL}/instructor/mine`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

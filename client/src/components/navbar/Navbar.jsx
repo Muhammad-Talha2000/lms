@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -6,10 +6,12 @@ import { setLoggedinUser } from "@/redux/authSlice";
 import { resetCourse } from "@/redux/courseSlice";
 import SearchInput from "../Filters/SearchInput";
 import { logoutUser } from "@/services/authService";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,156 +29,125 @@ const Navbar = () => {
     navigate("/");
   };
   const isActive = (path) => location.pathname === path;
-  // Function to render navigation links based on user role
-  const renderNavLinks = () => {
-    // If user is not logged in, show default nav links
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [mobileMenuOpen]);
+
+  const getNavItems = () => {
     if (!loggedinUser?.token) {
+      return [
+        { to: "/", label: "Home" },
+        { to: "/courses", label: "Courses" },
+        { to: "/classess", label: "Classes" },
+        { to: "/faqs", label: "FAQs" },
+        { to: "/contact", label: "Contact" },
+      ];
+    }
+    if (loggedinUser.user?.role === "instructor") {
+      return [
+        { to: "/", label: "Home" },
+        { to: "/instructordashboard", label: "Dashboard" },
+        { to: "/instructorsclassess", label: "Classes" },
+        { to: "/contact", label: "Contact" },
+      ];
+    }
+    if (loggedinUser.user?.role === "admin") {
+      return [
+        { to: "/", label: "Home" },
+        { to: "/admin", label: "Admin" },
+        { to: "/contact", label: "Contact" },
+      ];
+    }
+    return [
+      { to: "/", label: "Home" },
+      { to: "/courses", label: "Courses" },
+      { to: "/classess", label: "Classes" },
+      { to: "/faqs", label: "FAQs" },
+      { to: "/contact", label: "Contact" },
+    ];
+  };
+
+  const linkClassDesktop = (path) =>
+    `font-semibold px-3 py-2 rounded-md transition-colors ${
+      isActive(path)
+        ? "text-white bg-white/15"
+        : "text-slate-300 hover:text-white hover:bg-white/10"
+    }`;
+
+  const linkClassMobile = (path) =>
+    `block w-full text-left font-semibold px-4 py-3 border-b border-gray-100 ${
+      isActive(path) ? "text-blue-700 bg-blue-50" : "text-gray-700"
+    } active:bg-gray-50`;
+
+  const renderNavLinks = () => {
+    if (!loggedinUser?.token) {
+      const afterHome = getNavItems().filter(
+        (item) => item.to !== "/" && item.to !== "/courses"
+      );
       return (
         <>
-          <Link
-            to="/"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            HOME
+          <Link to="/" className={linkClassDesktop("/")}>
+            Home
           </Link>
-          <div className="relative">
+          <div className="relative hidden md:block">
             <button
-              className="text-gray-600 hover:text-orange-500 font-semibold px-3 py-2 flex items-center"
+              type="button"
+              className="text-slate-300 hover:text-white font-semibold px-3 py-2 flex items-center rounded-md hover:bg-white/10"
               onClick={() => setIsCoursesOpen(!isCoursesOpen)}
+              aria-expanded={isCoursesOpen}
+              aria-label="Course catalog menu"
             >
               <Link
                 to="/courses"
                 className={`${
-                  isActive("/courses") ? "text-orange-500" : "text-gray-600"
+                  isActive("/courses") ? "text-white" : "text-slate-300"
                 }`}
+                onClick={(e) => e.stopPropagation()}
               >
-                COURSES
+                Courses
               </Link>
             </button>
           </div>
-          <Link
-            to="/classess"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/classess") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            CLASSESS
-          </Link>
-          <Link
-            to="/faqs"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/faqs") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            FAQ
-          </Link>
-          <Link
-            to="/contact"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/contact") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            CONTACT
-          </Link>
+          {afterHome.map(({ to, label }) => (
+            <Link key={`${to}-${label}`} to={to} className={linkClassDesktop(to)}>
+              {label}
+            </Link>
+          ))}
         </>
       );
     }
-
-    // If user is logged in and is an instructor
-    if (loggedinUser?.user?.role === "instructor") {
-      return (
-        <>
-          <Link
-            to="/"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            HOME
-          </Link>
-          <Link
-            to="/instructordashboard"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/instructordashboard")
-                ? "text-orange-500"
-                : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            DASHBOARD
-          </Link>
-          <Link
-            to="/instructorsclassess"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/instructorsclassess")
-                ? "text-orange-500"
-                : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            CLASSESS
-          </Link>
-          <Link
-            to="/contact"
-            className={`font-semibold px-3 py-2 ${
-              isActive("/contact") ? "text-orange-500" : "text-gray-600"
-            } hover:text-orange-500`}
-          >
-            CONTACT
-          </Link>
-        </>
-      );
-    }
-
-    // If user is logged in and is a student
     return (
       <>
-        <Link
-          to="/"
-          className={`font-semibold px-3 py-2 ${
-            isActive("/") ? "text-orange-500" : "text-gray-600"
-          } hover:text-orange-500`}
-        >
-          HOME
-        </Link>
-
-        <Link
-          to="/courses"
-          className={`font-semibold px-3 py-2 ${
-            isActive("/courses") ? "text-orange-500" : "text-gray-600"
-          } hover:text-orange-500`}
-        >
-          COURSES
-        </Link>
-
-        <Link
-          to="/classess"
-          className={`font-semibold px-3 py-2 ${
-            isActive("/classess") ? "text-orange-500" : "text-gray-600"
-          } hover:text-orange-500`}
-        >
-          CLASSESS
-        </Link>
-
-        <Link
-          to="/faqs"
-          className={`font-semibold px-3 py-2 ${
-            isActive("/faqs") ? "text-orange-500" : "text-gray-600"
-          } hover:text-orange-500`}
-        >
-          FAQ
-        </Link>
-        <Link
-          to="/contact"
-          className={`font-semibold px-3 py-2 ${
-            isActive("/contact") ? "text-orange-500" : "text-gray-600"
-          } hover:text-orange-500`}
-        >
-          CONTACT
-        </Link>
+        {getNavItems().map(({ to, label }) => (
+          <Link key={`${to}-${label}`} to={to} className={linkClassDesktop(to)}>
+            {label}
+          </Link>
+        ))}
       </>
     );
   };
+
+  const renderNavLinksMobile = () =>
+    getNavItems().map(({ to, label }) => (
+      <Link
+        key={`m-${to}-${label}`}
+        to={to}
+        className={linkClassMobile(to)}
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {label}
+      </Link>
+    ));
 
   // Function to render profile dropdown menu based on user role
   const renderProfileMenu = () => {
@@ -187,7 +158,7 @@ const Navbar = () => {
             onClick={handleLogout}
             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
-            Logout
+            Sign out
           </button>
         </div>
       );
@@ -200,62 +171,69 @@ const Navbar = () => {
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={() => setIsProfileOpen(false)}
         >
-          Profile
+          Your profile
         </Link>
         <button
           onClick={handleLogout}
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
-          Logout
+          Sign out
         </button>
       </div>
     );
   };
 
   return (
-    <div className="w-full border-b fixed top-0 z-10 bg-white shadow-lg">
-      <div className="container mx-auto px-20">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold">
-              <span className="text-gray-900">CORPORATE</span>
-              <span className="text-orange-500">PRISM</span>
+    <div className="w-full border-b border-white/10 fixed top-0 z-50 bg-enterprise-navy shadow-lg shadow-black/20">
+      <div className="container mx-auto px-3 sm:px-4 md:px-8 lg:px-16 max-w-full">
+        <div className="flex items-center justify-between h-14 sm:h-16 gap-2 min-w-0">
+          {/* Logo + mobile menu */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0 min-w-0">
+            <button
+              type="button"
+              className="md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 p-2 text-slate-100 hover:bg-white/10"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((o) => !o)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+            <Link
+              to="/"
+              className="text-base sm:text-xl font-bold truncate"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="text-white tracking-tight">SMARTFLOW</span>
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Navigation Links — desktop */}
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-4 shrink min-w-0">
             {renderNavLinks()}
           </div>
 
-          {/* Right Side: Search + Auth Section */}
-          <div className="flex items-center space-x-4">
-            <div
-            // className="text-white px-4 py-2 hover:bg-orange-600 rounded-3xl flex items-center gap-2 bg-orange-500"
-            >
-              {/* <Search className="h-5 w-5" />
-              Search */}
-              {/* <Input
-              
-              type="email" placeholder="Search..." />
-              <CiSearch /> */}
-              {/* <div className="focus:outline-none transition-all duration-300 ease-in-out w-5 focus:w-44"> */}
-
+          {/* Right Side: Search + Auth */}
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 shrink-0 min-w-0">
+            <div className="hidden sm:block min-w-0 max-w-[200px] lg:max-w-none">
               <SearchInput
                 isHeader={true}
-                className="bg-orange-500 text-white rounded-full focus:outline-none"
+                className="rounded-full bg-orange-500 text-white focus:outline-none"
                 onSearch={(query) => console.log("Header Search:", query)}
               />
-              {/* </div> */}
             </div>
 
-            {/* If user is logged in, show profile dropdown */}
             {loggedinUser?.token ? (
               <div className="relative">
                 <button
-                  className="flex items-center gap-2"
+                  type="button"
+                  className="flex items-center gap-1 sm:gap-2 min-w-0"
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  aria-expanded={isProfileOpen}
+                  aria-label="Account menu"
                 >
                   <img
                     src={
@@ -263,38 +241,97 @@ const Navbar = () => {
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCBLi1pUh1ZuL0FTKyuKnNxoeq4MWNxSXRfg&s"
                     }
                     alt={loggedinUser?.user?.name}
-                    // className="w-10 h-10 rounded-full object-cover"
-                    className={`font-semibold px-[1px] py-[1px] ${
-                      isActive("/profile")
-                        ? "w-10 h-10 rounded-full object-cover border-2 border-orange-500 "
-                        : "w-10 h-10 rounded-full object-cover "
-                    } hover:text-orange-500 border-2 `}
+                    className={`shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover ${
+                      isActive("/profile") ? "border-2 border-blue-400" : ""
+                    } border-2 border-transparent`}
                   />
-                  <div className="flex flex-col text-left">
-                    <span className="text-sm font-semibold">
+                  <div className="hidden sm:flex flex-col text-left min-w-0">
+                    <span className="max-w-[8rem] truncate text-sm font-semibold text-white lg:max-w-[12rem]">
                       {loggedinUser?.user?.name}
                     </span>
-                    <span className="text-xs text-orange-500">
+                    <span className="truncate text-xs font-medium capitalize text-sky-300">
                       {loggedinUser?.user?.role}
                     </span>
                   </div>
                 </button>
-
-                {/* Profile Dropdown */}
                 {isProfileOpen && renderProfileMenu()}
               </div>
             ) : (
-              // If user is not logged in, show login/signup button
               <Link
                 to="/login"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-3xl"
+                className="hidden sm:inline-flex rounded-3xl bg-orange-500 px-3 py-2 text-sm font-semibold text-white whitespace-nowrap hover:bg-orange-600"
               >
-                Login / Sign Up
+                Log in or sign up
               </Link>
             )}
           </div>
         </div>
       </div>
+
+      {/* Mobile menu panel */}
+      {mobileMenuOpen && (
+        <>
+          <button
+            type="button"
+            className="md:hidden fixed inset-0 top-14 sm:top-16 bg-black/40 z-40"
+            aria-label="Close menu"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div
+            className="md:hidden fixed left-0 right-0 top-14 sm:top-16 bottom-0 z-40 bg-white border-t shadow-lg overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
+          >
+            <nav className="flex flex-col py-2">
+              {renderNavLinksMobile()}
+              <div className="px-4 py-3 border-b border-gray-100">
+                <p className="text-xs font-semibold text-gray-500 mb-2">Search</p>
+                <SearchInput
+                  isHeader={true}
+                  className="bg-orange-500 text-white rounded-full focus:outline-none w-full max-w-full"
+                  onSearch={(query) => console.log("Header Search:", query)}
+                />
+              </div>
+              {!loggedinUser?.token && (
+                <Link
+                  to="/login"
+                  className="block mx-4 my-3 text-center bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-xl font-semibold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Log in or sign up
+                </Link>
+              )}
+              {loggedinUser?.token && (
+                <div className="px-4 py-3 border-t border-gray-100 mt-2 space-y-2">
+                  {loggedinUser.user?.role !== "instructor" && (
+                    <Link
+                      to="/profile"
+                      className="block w-full text-left font-semibold py-2 text-gray-700"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setIsProfileOpen(false);
+                      }}
+                    >
+                      Your profile
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    className="block w-full text-left font-semibold py-2 text-red-600"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </nav>
+          </div>
+        </>
+      )}
     </div>
   );
 };

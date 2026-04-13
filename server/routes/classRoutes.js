@@ -6,10 +6,12 @@ import {
   updateClass,
   deleteClass,
   enrollStudentsinClass,
+  getClassesForInstructor,
 } from "../controllers/classController.js";
 import { authenticateUser } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
+router.get("/instructor/mine", authenticateUser, getClassesForInstructor);
 router.get("/", getClasses);
 router.get("/:id", getClassById);
 router.post("/", authenticateUser, createClass);
