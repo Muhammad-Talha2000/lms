@@ -6,7 +6,7 @@ import React from "react";
 const Faqs = () => {
   return (
     <DefaultLayout>
-      <PageHeader title="FAQs" breadcrumb="faqs"/>
+      <PageHeader title="Frequently asked questions" breadcrumb="Help" />
       <PerformanceDashboard />
     </DefaultLayout>
   );

@@ -9,7 +9,14 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
-const ClassTable = ({ classes, onEdit, onDelete, onRowClick, isLoading }) => {
+const ClassTable = ({
+  classes,
+  onEdit,
+  onDelete,
+  onRowClick,
+  isLoading,
+  showDelete = true,
+}) => {
   if (isLoading) {
     return <p className="text-center py-4">Loading...</p>;
   }
@@ -68,17 +75,19 @@ const ClassTable = ({ classes, onEdit, onDelete, onRowClick, isLoading }) => {
                   >
                     Edit
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="border-red-300 hover:bg-red-50 text-red-600"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(classItem);
-                    }}
-                  >
-                    Delete
-                  </Button>
+                  {showDelete && onDelete ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-red-300 hover:bg-red-50 text-red-600"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(classItem);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  ) : null}
                 </div>
               </TableCell>
             </TableRow>

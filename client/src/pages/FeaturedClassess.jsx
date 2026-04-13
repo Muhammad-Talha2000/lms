@@ -9,7 +9,7 @@ const FeaturedClassess = () => {
   return (
     <DefaultLayout>
       <div className=" mx-auto flex items-center justify-center flex-col">
-        <PageHeader title="Featured Classess" breadcrumb="class" />
+        <PageHeader title="Featured learning cohorts" breadcrumb="Classes" />
         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         <FeaturedClass width={"90%"} searchQuery={searchQuery} />
       </div>

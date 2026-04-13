@@ -54,10 +54,10 @@ const FeaturedClass = ({ bgColor, width, searchQuery }) => {
               <div className="p-1 bg-[#daf2f0] rounded-full">
                 <AiFillThunderbolt color="ea580c" />
               </div>
-              Top Class Programs
+              Structured cohort experiences
             </span>
           </div>
-          <h2 className="text-3xl font-bold mt-4">Explore Featured Classes</h2>
+          <h2 className="text-3xl font-bold mt-4">Browse featured classes & cohorts</h2>
         </div>
 
         {/* Classes Grid */}
@@ -99,7 +99,7 @@ const FeaturedClass = ({ bgColor, width, searchQuery }) => {
                       to={`/class/${classItem._id}`}
                       className="hover:bg-orange-100 border-2 border-orange-300 py-2 px-4 rounded-full font-medium"
                     >
-                      View Details
+                      Open class overview
                     </Link>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ const FeaturedClass = ({ bgColor, width, searchQuery }) => {
             ))
           ) : (
             <p className="text-center text-gray-500 col-span-3">
-              No classes found
+              No classes match this search—adjust filters or keywords.
             </p>
           )}
         </div>

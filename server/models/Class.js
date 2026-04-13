@@ -5,6 +5,7 @@ const classSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
+    thumbnail: { type: String, default: "" },
     subjects: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true },
     ],

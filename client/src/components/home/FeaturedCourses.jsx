@@ -7,7 +7,7 @@ import { HiUsers } from "react-icons/hi2";
 import { SiGoogleclassroom } from "react-icons/si";
 import { PiRecordFill } from "react-icons/pi";
 
-const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
+const FeaturedCourses = ({ bgColor, width = "100%", searchQuery }) => {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]); // State for filtered courses
   const [selectedFilter, setSelectedFilter] = useState("All"); // Default filter
@@ -61,8 +61,14 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
   const filters = ["All", "Recorded", "Live", "One-to-One"];
 
   return (
-    <div style={{ backgroundColor: bgColor }}>
-      <div className="container mx-auto py-12 " style={{ width: width }}>
+    <div
+      className="w-full max-w-full overflow-x-hidden min-w-0"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div
+        className="container mx-auto py-8 sm:py-12 w-full max-w-full min-w-0 px-2 sm:px-4"
+        style={width ? { width, maxWidth: "100%" } : undefined}
+      >
         {/* Heading Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center">
@@ -70,10 +76,12 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
               <div className="p-1 bg-[#daf2f0] rounded-full">
                 <AiFillThunderbolt color="ea580c" />
               </div>
-              Top class courses
+              Curated learning tracks
             </span>
           </div>
-          <h2 className="text-3xl font-bold mt-4">Explore Featured Courses</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mt-4 px-1 break-words">
+            Spotlight programs worth your next enrollment
+          </h2>
         </div>
 
         {/* Dynamic Filter Buttons */}
@@ -99,13 +107,13 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
             filteredCourses.map((course) => (
               <div
                 key={course._id}
-                className="bg-white shadow-md overflow-hidden transition transform hover:-translate-y-2 pb-4"
+                className="bg-white shadow-md overflow-hidden transition transform hover:-translate-y-2 pb-4 max-w-full min-w-0"
               >
                 {/* Course Image */}
                 <img
                   src={course.thumbnail}
                   alt={course.name}
-                  className="w-full h-52 object-cover p-4"
+                  className="w-full max-w-full h-48 sm:h-52 object-cover p-3 sm:p-4"
                 />
 
                 {/* Course Details */}
@@ -153,7 +161,7 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
                           {course.instructor?.name || "Unknown"}
                         </span>
                         <span className="text-orange-500 text-xs">
-                          Instructor
+                          Course lead
                         </span>
                       </p>
                     </div>
@@ -165,15 +173,15 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
                   </div>
 
                   {/* Price and View Details button */}
-                  <div className="flex items-center justify-between mt-4 border-t-2 border-[#e8f0f3] pt-4">
-                    <p className="font-bold text-gray-800">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4 border-t-2 border-[#e8f0f3] pt-4">
+                    <p className="font-bold text-gray-800 shrink-0">
                       Rs. {course?.price || "Free"}
                     </p>
                     <Link
                       to={`/courseDetails/${course._id}`}
-                      className="hover:bg-[#e8f0f3] border-2 border-[#e8f0f3] py-2 px-4 rounded-full font-medium"
+                      className="hover:bg-[#e8f0f3] border-2 border-[#e8f0f3] py-2 px-4 rounded-full font-medium text-center sm:text-left whitespace-nowrap"
                     >
-                      View Details
+                      View syllabus & pricing
                     </Link>
                   </div>
                 </div>
@@ -181,7 +189,7 @@ const FeaturedCourses = ({ bgColor, width, searchQuery }) => {
             ))
           ) : (
             <p className="text-center text-gray-500 col-span-3">
-              No courses found
+              No published courses match this filter yet—try another format.
             </p>
           )}
         </div>

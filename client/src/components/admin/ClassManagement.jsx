@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ClassService from "@/services/classService";
+import { uploadImageToCloudinary } from "@/services/cloudinaryService";
 import { useSelector } from "react-redux";
 import { useToast } from "@/hooks/use-toast";
 import SearchBar from "../Classes/SearchBar";
@@ -22,7 +23,9 @@ const ClassManagement = () => {
     name: "",
     description: "",
     price: "",
+    thumbnail: "",
   });
+  const [thumbnailFile, setThumbnailFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -73,8 +76,10 @@ const ClassManagement = () => {
       name: "",
       description: "",
       price: "",
+      thumbnail: "",
       id: null,
     });
+    setThumbnailFile(null);
   };
 
   const handleFormSubmit = async (e) => {
@@ -82,29 +87,26 @@ const ClassManagement = () => {
     setIsLoading(true);
 
     try {
+      let thumbnailUrl = formData.thumbnail || "";
+      if (thumbnailFile) {
+        thumbnailUrl = await uploadImageToCloudinary(thumbnailFile);
+      }
+
+      const payload = {
+        name: formData.name,
+        description: formData.description,
+        price: formData.price,
+        thumbnail: thumbnailUrl,
+      };
+
       if (isEditing) {
-        await ClassService.updateClass(
-          formData.id,
-          {
-            name: formData.name,
-            description: formData.description,
-            price: formData.price,
-          },
-          token
-        );
+        await ClassService.updateClass(formData.id, payload, token);
         toast({
           title: "Success",
           description: "Class updated successfully",
         });
       } else {
-        await ClassService.createClass(
-          {
-            name: formData.name,
-            description: formData.description,
-            price: formData.price,
-          },
-          token
-        );
+        await ClassService.createClass(payload, token);
         toast({
           title: "Success",
           description: "Class created successfully",
@@ -160,11 +162,13 @@ const ClassManagement = () => {
   };
 
   const openEditModal = (classItem) => {
+    setThumbnailFile(null);
     setFormData({
       id: classItem._id,
       name: classItem.name,
       description: classItem.description,
       price: classItem.price,
+      thumbnail: classItem.thumbnail || "",
     });
     setIsEditing(true);
     setIsFormModalOpen(true);
@@ -208,7 +212,7 @@ const ClassManagement = () => {
 
       {/* Unified Modal for Create and Edit */}
       <Dialog open={isFormModalOpen} onOpenChange={setIsFormModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-serif">
               {isEditing ? "Edit Class" : "Create New Class"}
@@ -221,6 +225,9 @@ const ClassManagement = () => {
             onCancel={() => setIsFormModalOpen(false)}
             isLoading={isLoading}
             isEditing={isEditing}
+            thumbnailFile={thumbnailFile}
+            setThumbnailFile={setThumbnailFile}
+            formKey={formData.id || "create"}
           />
         </DialogContent>
       </Dialog>

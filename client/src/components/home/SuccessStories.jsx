@@ -12,25 +12,23 @@ import { useNavigate } from "react-router-dom";
 const SuccessStories = () => {
   const navigate = useNavigate();
   return (
-    <div
-      className="container mx-auto py-16 -500 flex gap-4 items-center justify-center"
-      style={{ maxWidth: "90%" }}
-    >
-      {/* Left Side - Takes 40% of the container */}
-      <div className="flex items-end justify-end w-[40%] gap-4">
+    <div className="w-full max-w-full overflow-x-hidden box-border py-12 sm:py-16">
+      <div className="container mx-auto flex flex-col lg:flex-row gap-8 lg:gap-6 items-stretch lg:items-center justify-center px-2 sm:px-4 max-w-7xl">
+      {/* Left Side - images */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-end justify-center lg:justify-end w-full lg:w-[42%] gap-4 min-w-0">
         {/* First Box - Image  */}
         <div className="flex flex-col">
           <img
             src={about1}
-            alt=""
-            className="rounded-tr-[40px] rounded-bl-[40px] shadow-lg w-full h-56  object-cover"
+            alt="Learners collaborating in a blended classroom workshop"
+            className="rounded-tr-[40px] rounded-bl-[40px] shadow-lg w-full min-h-[14rem] h-56 max-h-64 object-cover"
           />
           <div className="relative bg-orange-500 text-white p-4 rounded-tr-[40px] rounded-bl-[40px] flex items-center gap-2 shadow-lg mt-2">
             <div className="bg-white text-orange-500 rounded-full p-2 flex items-center justify-center">
               <Phone className="w-4 h-4 text-orange-500" />
             </div>
             <div>
-              <p className="text-xs font-semibold">ONLINE SUPPORT</p>
+              <p className="text-xs font-semibold">DEDICATED HELP LINE</p>
               <p className="text-xs font-semibold">+258 152 3659</p>
             </div>
           </div>
@@ -40,34 +38,33 @@ const SuccessStories = () => {
         <div>
           <img
             src={about2}
-            alt=""
-            className="rounded-br-[40px] rounded-tl-[40px] shadow-lg w-full h-56 object-cover"
+            alt="Graduates celebrating milestone achievements after finishing coursework"
+            className="rounded-br-[40px] rounded-tl-[40px] shadow-lg w-full min-h-[14rem] h-56 max-h-64 object-cover"
           />
         </div>
       </div>
 
-      {/* Right Side - Takes 60% of the container */}
-      <div className="w-[60%] px-4 flex flex-col items-start  ">
+      {/* Right Side - copy */}
+      <div className="w-full lg:w-[58%] px-0 sm:px-2 lg:px-4 flex flex-col items-start min-w-0">
         <div className="flex items-center w-full ">
           <span className="bg-[#daf2f0] flex items-center gap-2 px-3 py-2 rounded-3xl text-sm">
             <div className="p-1 bg-white rounded-full">
               <AiFillThunderbolt color="ea580c" />
             </div>
-            Get more about us
+            Why teams choose Smartflow
           </span>
         </div>
-        <h1 className="w-full font-bold text-2xl pt-2">
-          Over 10 Years in Distant learning for Skill Development
+        <h1 className="w-full font-bold text-xl sm:text-2xl pt-2 break-words">
+          More than ten years guiding learners through remote, skills-first education
         </h1>
         <p className="text-gray-500 text-sm py-2">
-          Compellingly procrastinate equity invested markets with efficient
-          process improvements. actualize mission-critical partnerships with
-          integrated portals. Authoritatively optimize low-risk high-yield
-          metrics and plug-and-play potentialities.
+          We pair structured curricula with human coaching so knowledge sticks—from
+          onboarding bootcamps to advanced certifications—while dashboards keep every
+          stakeholder aligned on outcomes.
         </p>
 
-        <div className="flex gap-8 mb-8 items-center justify-evenly w-full">
-          <div className="flex items-center gap-8">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 mb-8 items-start sm:items-center justify-start sm:justify-evenly w-full">
+          <div className="flex items-center gap-4 sm:gap-8 w-full sm:w-auto min-w-0">
             <div className=" rounded-full shadow-md bg-orange-50 h-12 w-12">
               <FiImage color="ea580c" className="p-3 h-full w-full" />
             </div>
@@ -76,11 +73,11 @@ const SuccessStories = () => {
                 <Counter number={105} title="+" />
               </h3>
               <p className="text-gray-600 mt-2">
-                Total active students <br /> taking gifted courses
+                Learners actively advancing <br /> through mentor-led pathways
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 sm:gap-8 w-full sm:w-auto min-w-0">
             <div className=" rounded-full shadow-md bg-orange-50  h-12 w-12">
               <FaUserGraduate color="ea580c" className="p-3 h-full w-full" />
             </div>
@@ -89,7 +86,7 @@ const SuccessStories = () => {
                 <Counter number={6700} title="+" />
               </h3>
               <p className="text-gray-600 mt-2">
-                Total active students <br /> taking gifted courses
+                Credentials & milestones <br /> issued to graduates worldwide
               </p>
             </div>
           </div>
@@ -99,8 +96,9 @@ const SuccessStories = () => {
           onClick={() => navigate("/courses")}
           className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium"
         >
-          Get Enrolled
+          Explore programs
         </Button>
+      </div>
       </div>
     </div>
   );

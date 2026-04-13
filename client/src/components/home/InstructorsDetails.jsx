@@ -328,25 +328,25 @@ const staticInstructors = [
     id: 1,
     profileImage: team1,
     name: "Zarama Mass Likan",
-    title: "Master Educator",
+    title: "Lead curriculum architect",
   },
   {
     id: 2,
     profileImage: team2,
     name: "Amellia Grace Lilly",
-    title: "Expert Tutor",
+    title: "Live facilitation specialist",
   },
   {
     id: 3,
     profileImage: team3,
     name: "Mason Logan Dee",
-    title: "Senior Instructor",
+    title: "Senior subject-matter coach",
   },
   {
     id: 4,
     profileImage: team4,
     name: "Isabella Smith",
-    title: "Online Teacher",
+    title: "Hybrid classroom mentor",
   },
 ];
 
@@ -393,29 +393,32 @@ const InstructorsDetails = () => {
   }, []);
 
   return (
-    <div className="bg-[#e8f0f3] py-16 mt-16">
-      <div className="container mx-auto px-4 flex flex-col items-center">
+    <div className="bg-[#e8f0f3] py-12 sm:py-16 mt-12 sm:mt-16 w-full max-w-full overflow-x-hidden">
+      <div className="container mx-auto px-3 sm:px-4 flex flex-col items-center max-w-full min-w-0">
         {/* Welcome Section */}
         <div className="flex items-center">
           <span className="bg-white flex items-center gap-2 px-3 py-2 rounded-3xl text-sm">
             <div className="p-1 bg-[#daf2f0] rounded-full">
               <AiFillThunderbolt color="#ea580c" />
             </div>
-            Welcome to Online Education
+            Expert-led instruction at scale
           </span>
         </div>
 
         {/* Heading */}
-        <h2 className="text-3xl font-bold mt-4 text-center">
-          Get to know about our world-class teachers
+        <h2 className="text-2xl sm:text-3xl font-bold mt-4 text-center px-2 break-words">
+          Meet the educators shaping every cohort experience
         </h2>
 
         {/* Loading State */}
         {loading ? (
-          <p className="mt-8 text-lg font-semibold">Loading instructors...</p>
+          <p className="mt-8 text-lg font-semibold">Gathering faculty profiles…</p>
         ) : (
           // Carousel
-          <div className="w-full max-w-4xl mt-8" ref={carouselRef}>
+          <div
+            className="w-full max-w-full sm:max-w-4xl mt-8 px-1 sm:px-0 min-w-0"
+            ref={carouselRef}
+          >
             <Carousel>
               <CarouselContent>
                 {instructors.map((instructor) => (
@@ -434,7 +437,7 @@ const InstructorsDetails = () => {
                           {instructor.name}
                         </h5>
                         <p className="text-orange-500 font-semibold text-xs mt-1">
-                          {instructor.title || "Instructor"}
+                          {instructor.title || "Faculty mentor"}
                         </p>
                       </CardContent>
                     </Card>
