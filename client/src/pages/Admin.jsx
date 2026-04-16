@@ -105,6 +105,8 @@ import {
   BarChart2,
   Bell,
   Settings,
+  Menu,
+  X,
 } from "lucide-react";
 
 import Notifications from "@/components/admin/Notifications";
@@ -142,11 +144,21 @@ export default function Admin() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const [adminNavOpen, setAdminNavOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("selectedMenuTab", selectedMenuTab);
     localStorage.setItem("selectedMenu", selectedMenuTab);
   }, [selectedMenuTab]);
+
+  useEffect(() => {
+    if (!adminNavOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [adminNavOpen]);
 
   const handleLogout = async () => {
     try {
@@ -174,32 +186,80 @@ export default function Admin() {
 
   return (
     <DefaultLayout>
-      <h1 className="font-bold text-orange-500 text-2xl sm:text-3xl md:text-4xl text-center my-6 sm:my-10">
-        Admin Dashboard
-      </h1>
-      <div className="mb-6 sm:mb-8 flex justify-center sm:justify-end px-4 sm:px-8 lg:px-12">
-        <Button
-          onClick={handleLogout}
-          disabled={logoutLoading}
-          className="bg-red-500 hover:bg-red-600 w-full sm:w-auto"
-        >
-          {logoutLoading ? "Logging Out..." : "Logout"}
-        </Button>
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="my-5 flex items-center justify-between gap-3 sm:my-8">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-800 shadow-sm lg:hidden"
+            onClick={() => setAdminNavOpen(true)}
+            aria-expanded={adminNavOpen}
+            aria-label="Open admin menu"
+          >
+            <Menu className="h-5 w-5" />
+            Menu
+          </button>
+          <h1 className="font-bold text-orange-500 text-2xl sm:text-3xl md:text-4xl text-center">
+            Admin Dashboard
+          </h1>
+          <div className="w-auto">
+            <Button
+              onClick={handleLogout}
+              disabled={logoutLoading}
+              className="bg-red-500 hover:bg-red-600 w-auto"
+            >
+              {logoutLoading ? "Logging Out..." : "Logout"}
+            </Button>
+          </div>
+        </div>
       </div>
+
+      {adminNavOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          aria-label="Close menu"
+          onClick={() => setAdminNavOpen(false)}
+        />
+      )}
+
       <div className="w-full mx-auto flex flex-col lg:flex-row gap-6 lg:gap-10 px-4 sm:px-6 lg:px-8 pb-6">
-        {/* Sidebar and Logout Button */}
-        <div className="flex w-full flex-col items-center lg:w-auto lg:items-start">
-          <div className="flex w-full items-center justify-center rounded-2xl bg-enterprise-navy p-3 shadow-lg lg:w-auto lg:justify-start lg:sticky lg:top-28">
+        <aside
+          className={`
+            fixed lg:static z-50 lg:z-0
+            left-0 top-14 sm:top-16 bottom-0 lg:top-auto lg:bottom-auto
+            w-[min(88vw,300px)] lg:w-auto lg:min-w-[240px]
+            transform transition-transform duration-200 ease-out
+            ${adminNavOpen ? "translate-x-0" : "-translate-x-full"}
+            lg:translate-x-0
+            lg:sticky lg:top-28 lg:self-start
+            max-h-[calc(100dvh-3.5rem)] sm:max-h-[calc(100dvh-4rem)] lg:max-h-[calc(100vh-6rem)] overflow-y-auto
+            bg-enterprise-navy p-2 sm:p-3 lg:rounded-r-2xl
+          `}
+        >
+          <div className="flex shrink-0 justify-end rounded-t-lg border-b border-white/10 bg-enterprise-navy p-2 lg:hidden">
+            <button
+              type="button"
+              className="rounded-lg p-2 text-slate-200 hover:bg-white/10"
+              onClick={() => setAdminNavOpen(false)}
+              aria-label="Close admin menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex w-full items-center justify-center rounded-2xl bg-enterprise-navy p-3 shadow-lg lg:w-auto lg:justify-start">
             <Sidebar
               role="Admin"
               headerTitle="Admin"
               menuItems={adminMenuItems}
-              onSelect={(menu) => setSelectedMenuTab(menu)}
+              onSelect={(menu) => {
+                setSelectedMenuTab(menu);
+                setAdminNavOpen(false);
+              }}
               className="w-full lg:w-auto"
               notificationCount={notificationCount}
             />
           </div>
-        </div>
+        </aside>
 
         {/* Admin tab content (not a second <main> — DefaultLayout already provides one) */}
         <div className="w-full flex-1 flex flex-col gap-6 lg:gap-8 overflow-x-hidden">

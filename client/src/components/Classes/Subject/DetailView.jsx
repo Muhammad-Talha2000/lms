@@ -176,7 +176,7 @@ const DetailView = ({ subject }) => {
                   <img
                     src={updatedSubject.thumbnail}
                     alt="Thumbnail preview"
-                    className=""
+                    className="mx-auto max-h-72 w-auto max-w-full rounded-lg object-contain"
                   />
                 </div>
               ) : (
@@ -190,15 +190,17 @@ const DetailView = ({ subject }) => {
               )}
             </div>
           ) : (
-            <div className="rounded-lg overflow-hidden shadow-md">
+            <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50 shadow-sm">
               {subject.thumbnail ? (
-                <img
-                  src={subject.thumbnail}
-                  alt={subject.name}
-                  className="max-h-80 w-full object-cover"
-                />
+                <div className="p-3 sm:p-4">
+                  <img
+                    src={subject.thumbnail}
+                    alt={subject.name}
+                    className="mx-auto h-auto max-h-[360px] w-full max-w-3xl rounded-lg object-contain"
+                  />
+                </div>
               ) : (
-                <div className="bg-orange-50 h-48 flex items-center justify-center rounded-lg">
+                <div className="flex h-48 items-center justify-center rounded-lg bg-orange-50">
                   <p className="text-orange-300">No thumbnail</p>
                 </div>
               )}
@@ -241,7 +243,7 @@ const DetailView = ({ subject }) => {
 
         {/* Instructor Details - Only visible to admin and students */}
         {canViewInstructor && (
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
             <Label className="text-sm font-medium text-gray-600 mb-2 block">
               Instructor
             </Label>

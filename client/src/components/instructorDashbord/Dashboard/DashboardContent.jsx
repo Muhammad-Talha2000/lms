@@ -7,7 +7,7 @@ import { HiUsers } from "react-icons/hi2";
 import { useSelector } from "react-redux";
 import { getCourses } from "@/services/courseService";
 
-const DashboardContent = () => {
+const DashboardContent = ({ onViewAllTasks = () => {} }) => {
   const { loggedinUser } = useSelector((state) => state.auth);
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,6 +91,41 @@ const DashboardContent = () => {
       .slice(0, 3);
   }, [instructorCourses]);
 
+  const upcomingTasks = useMemo(() => {
+    const now = new Date();
+    const tasks = [];
+
+    instructorCourses.forEach((course) => {
+      (course.assignments || []).forEach((assignment) => {
+        if (!assignment?.dueDate) return;
+        const due = new Date(assignment.dueDate);
+        if (Number.isNaN(due.getTime()) || due < now) return;
+        tasks.push({
+          id: assignment._id || `${course._id}-assignment-${assignment.title}`,
+          title: assignment.title || "Assignment",
+          courseName: course.name || "Untitled course",
+          dueAt: due,
+          type: "assignment",
+        });
+      });
+
+      (course.quizzes || []).forEach((quiz) => {
+        if (!quiz?.dueDate) return;
+        const due = new Date(quiz.dueDate);
+        if (Number.isNaN(due.getTime()) || due < now) return;
+        tasks.push({
+          id: quiz._id || `${course._id}-quiz-${quiz.title}`,
+          title: quiz.title || "Quiz",
+          courseName: course.name || "Untitled course",
+          dueAt: due,
+          type: "quiz",
+        });
+      });
+    });
+
+    return tasks.sort((a, b) => a.dueAt - b.dueAt).slice(0, 5);
+  }, [instructorCourses]);
+
   const earningsLabel = isLoading
     ? "..."
     : new Intl.NumberFormat("en-PK", {
@@ -128,7 +163,11 @@ const DashboardContent = () => {
           <TopCourses courses={topCourses} isLoading={isLoading} />
         </div>
         <div className="flex-1 min-w-0 lg:max-w-md">
-          <UpcmingTasks />
+          <UpcmingTasks
+            tasks={upcomingTasks}
+            isLoading={isLoading}
+            onViewAllTasks={onViewAllTasks}
+          />
         </div>
       </div>
     </main>

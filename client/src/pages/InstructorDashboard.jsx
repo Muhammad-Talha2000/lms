@@ -69,6 +69,11 @@ const InstructorDashboard = () => {
     setInstructorNavOpen(false);
   };
 
+  const handleViewAllTasks = () => {
+    setSelectedMenu("Course");
+    setInstructorNavOpen(false);
+  };
+
   return (
     <DefaultLayout>
       <div className="w-full max-w-full overflow-x-hidden px-3 py-4 sm:px-4 sm:py-6 lg:px-8 lg:py-10 box-border">
@@ -131,7 +136,9 @@ const InstructorDashboard = () => {
           </aside>
 
           <main className="flex-1 flex flex-col gap-6 lg:gap-8 min-w-0 w-full overflow-x-hidden overflow-y-visible">
-            {selectedMenu === "Dashboard" && <DashboardContent />}
+            {selectedMenu === "Dashboard" && (
+              <DashboardContent onViewAllTasks={handleViewAllTasks} />
+            )}
             {selectedMenu === "Course" && <CourseContent />}
             {selectedMenu === "My classes" && <InstructorClassesContent />}
             {selectedMenu === "Students" && <StudentsContent />}

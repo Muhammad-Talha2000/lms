@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getCourses, publishCourse } from "@/services/courseService";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { BookOpen, GraduationCap } from "lucide-react";
 
 const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -64,27 +65,48 @@ const CourseManagement = () => {
     }
   };
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Course Management</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="mx-auto w-full max-w-7xl space-y-5 py-2">
+      <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-amber-50/60 p-5 shadow-sm sm:p-6">
+        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          Course Management
+        </h1>
+        <p className="mt-2 text-sm text-gray-600">
+          Review published status and open a course for details.
+        </p>
+      </section>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {courses?.map((course) => (
-          <div key={course._id} className="bg-white shadow-md rounded-lg p-4">
-            <img
-              src={course.thumbnail}
-              alt={course.name}
-              className="w-full h-40 object-c
-              over rounded-lg mb-4"
-            />
+          <div
+            key={course._id}
+            className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <div className="aspect-[16/9] w-full overflow-hidden bg-gray-100">
+              {course.thumbnail ? (
+                <img
+                  src={course.thumbnail}
+                  alt={course.name}
+                  className="h-full w-full object-cover object-center"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-gray-400">
+                  <BookOpen className="h-8 w-8" />
+                </div>
+              )}
+            </div>
+            <div className="p-4">
             <Link to={`/checking-course/${course._id}`}>
-              <h2
-                onClick={() => navigate(`/learner-page/${id}`)}
-                className="text-lg font-bold mb-2"
-              >
+              <h2 className="mb-2 line-clamp-2 text-lg font-bold text-gray-900">
                 {course.name}
               </h2>
             </Link>
-            {/* <p className="text-gray-600 mb-4">{course.description}</p> */}
-            {/* <div className="flex justify-between items-center">
+            <div className="mb-3 flex items-center gap-4 text-xs text-gray-500">
+              <span className="inline-flex items-center gap-1">
+                <GraduationCap className="h-3.5 w-3.5" />
+                {course?.enrolledStudents?.length || 0} students
+              </span>
+              <span>{course?.lessons?.length || 0} lessons</span>
+            </div>
+            <div className="flex items-center justify-between">
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
                   course.published
@@ -98,30 +120,7 @@ const CourseManagement = () => {
                 onClick={() =>
                   handlePublishToggle(course._id, course.published)
                 }
-                className={`px-4 py-2 text-white rounded-lg shadow ${
-                  course.published
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-green-500 hover:bg-green-600"
-                }`}
-              >
-                {course.published ? "Unpublish" : "Publish"}
-              </button>
-            </div> */}
-            <div className="flex justify-between items-center">
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  course.published
-                    ? "bg-green-100 text-green-700"
-                    : "bg-gray-100 text-gray-700"
-                }`}
-              >
-                {course.published ? "Published" : "Unpublished"}
-              </span>
-              <button
-                onClick={() =>
-                  handlePublishToggle(course._id, course.published)
-                }
-                className={`px-4 py-2 text-white rounded-lg shadow flex items-center justify-center ${
+                className={`px-4 py-2 text-white rounded-lg shadow-sm text-sm font-medium flex items-center justify-center ${
                   course.published
                     ? "bg-red-500 hover:bg-red-600"
                     : "bg-green-500 hover:bg-green-600"
@@ -135,6 +134,7 @@ const CourseManagement = () => {
                   : "Publish"}
               </button>
             </div>
+          </div>
           </div>
         ))}
       </div>

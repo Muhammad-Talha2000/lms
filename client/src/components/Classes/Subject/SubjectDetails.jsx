@@ -137,19 +137,19 @@ const SubjectDetails = () => {
 
         <aside
           className={`
-            fixed z-50 flex flex-col overflow-hidden border-r border-white/10 bg-enterprise-navy p-2 lg:static lg:z-auto
+            fixed z-50 flex flex-col overflow-hidden bg-white p-0 lg:static lg:z-auto
             left-0 top-14 bottom-0 w-[min(92vw,20rem)] sm:top-16
-            max-h-[calc(100dvh-3.5rem)] sm:max-h-[calc(100dvh-4rem)] lg:max-h-none lg:w-80 lg:min-w-[280px] lg:shrink-0 lg:rounded-r-2xl
+            max-h-[calc(100dvh-3.5rem)] sm:max-h-[calc(100dvh-4rem)] lg:max-h-none lg:w-80 lg:min-w-[280px] lg:shrink-0
             transform transition-transform duration-200 ease-out
             ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}
             lg:translate-x-0
             lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)]
           `}
         >
-          <div className="flex shrink-0 justify-end border-b border-white/10 bg-enterprise-navy p-2 lg:hidden">
+          <div className="flex shrink-0 justify-end border-b border-gray-200 bg-white p-2 lg:hidden">
             <button
               type="button"
-              className="rounded-lg p-2 text-slate-200 hover:bg-white/10"
+              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100"
               onClick={closeMobileSidebar}
               aria-label="Close subject menu"
             >

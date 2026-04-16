@@ -94,6 +94,19 @@ export const getAllUsers = async (token) => {
   }
 };
 
+export const getPublicInstructors = async () => {
+  try {
+    const response = await axios.get(`${BASEURL}/instructors/public`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error fetching public instructors:",
+      error.response?.data || error.message
+    );
+    throw error.response?.data || { message: "Failed to fetch instructors" };
+  }
+};
+
 export const logoutUser = async (userId) => {
   try {
     const response = await axios.post(`${BASEURL}/logout`, { userId });
@@ -118,5 +131,6 @@ export const toggleStatus = async (token, instructorId) => {
     return response.data;
   } catch (error) {
     console.log("Error while calling toggleStatus API", error);
+    throw error.response?.data || { message: "Failed to update instructor status" };
   }
 };

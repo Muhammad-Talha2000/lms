@@ -94,6 +94,7 @@ import { authenticateUser } from "../middleware/authMiddleware.js";
 import {
   createCheckoutSession,
   confirmCheckoutSession,
+  getAdminPaymentOverview,
 } from "../controllers/paymentControllers.js";
 
 const router = express.Router();
@@ -106,5 +107,6 @@ router.post(
 router.post("/confirm-session", authenticateUser, confirmCheckoutSession);
 /** Alias — same handler as Stripe checkout */
 router.post("/pay", authenticateUser, createCheckoutSession);
+router.get("/admin/overview", authenticateUser, getAdminPaymentOverview);
 
 export default router;

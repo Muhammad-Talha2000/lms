@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,14 +18,14 @@ import {
 import { Pagination } from "@/components/ui/pagination";
 import { getAllUsers, toggleStatus } from "@/services/authService";
 import { useSelector } from "react-redux";
-import { Card } from "@radix-ui/themes";
 import { useToast } from "@/hooks/use-toast";
+import { UsersRound } from "lucide-react";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedinUser } = useSelector((state) => state.auth);
-  const toast = useToast();
+  const { toast } = useToast();
 
   const fetchUsers = async () => {
     try {
@@ -43,15 +42,20 @@ const UserManagement = () => {
 
   const handleActivate = async (userId) => {
     try {
-      const response = await toggleStatus(loggedinUser.token, userId);
+      await toggleStatus(loggedinUser.token, userId);
       await fetchUsers(loggedinUser.token);
       toast({
         title: "Success!",
-        description: "User activated successfully",
+        description: "User status updated successfully",
         variant: "success",
       });
     } catch (error) {
-      console.log("Error while updating", error);
+      toast({
+        title: "Activation failed",
+        description:
+          error?.message || "Could not update user status.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -65,6 +69,11 @@ const UserManagement = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5); // Default to 5 rows per page
   const [activeTab, setActiveTab] = useState("All");
   const [filterText, setFilterText] = useState("");
+  const isInstructorUser = (user) =>
+    user?.role?.toLowerCase() === "instructor" || user?.__t === "Instructor";
+  const isLearnerUser = (user) => user?.role?.toLowerCase() === "student";
+  const canToggleStatus = (user) => isInstructorUser(user) || isLearnerUser(user);
+  const isUserActive = (user) => user?.status !== false;
 
   // Ensure users is initialized before filtering
   const filteredData = users.filter((user) => {
@@ -95,19 +104,38 @@ const UserManagement = () => {
   const paginatedData = filteredData.slice(startIndex, endIndex);
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  if (loading) return <p>Loading users...</p>;
+  if (loading)
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center text-sm text-gray-500 shadow-sm">
+        Loading users...
+      </div>
+    );
 
   return (
-    <div className="w-full py-8 px-8">
+    <div className="w-full rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm sm:p-6">
+      <div className="mb-6 flex flex-col gap-2">
+        <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+          Admin panel
+        </p>
+        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          User management
+        </h2>
+        <p className="text-sm text-gray-600">
+          Review instructors and learners, then activate pending accounts.
+        </p>
+      </div>
+
       {/* Tabs */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="space-x-4">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-gray-50 p-1">
           {["All", "Instructor", "Learner"].map((tab) => (
             <Button
               key={tab}
-              variant="link"
+              variant={activeTab === tab ? "default" : "ghost"}
               className={
-                activeTab === tab ? "text-orange-500" : "text-gray-400"
+                activeTab === tab
+                  ? "h-9 rounded-lg bg-orange-500 px-4 text-white hover:bg-orange-600"
+                  : "h-9 rounded-lg px-4 text-gray-600 hover:bg-white"
               }
               onClick={() => setActiveTab(tab)}
             >
@@ -115,27 +143,26 @@ const UserManagement = () => {
             </Button>
           ))}
         </div>
-        {/* <p className="text-sm text-gray-500">View and manage your {activeTab.toLowerCase()} details</p> */}
       </div>
 
       {/* Search & Filter */}
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Input
           type="search"
           placeholder="Filter by name, email, role, or status"
-          className="w-1/3"
+          className="w-full sm:max-w-md"
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
         />
-        {/* <Button variant="secondary" className="text-gray-500" onClick={() => setFilterText("")}>
-          Clear
-        </Button> */}
+        <p className="text-sm text-gray-500">
+          {filteredData.length} user{filteredData.length === 1 ? "" : "s"} found
+        </p>
       </div>
 
-      {/* Table */}
-      <Card className="p-4 bg-white shadow-lg rounded-lg">
+      {/* Desktop table */}
+      <div className="hidden rounded-xl border border-gray-200 lg:block">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-gray-50">
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Mobile</TableHead>
@@ -149,41 +176,120 @@ const UserManagement = () => {
             {paginatedData.length > 0 ? (
               paginatedData.map((user) => (
                 <TableRow key={user._id}>
-                  <TableCell>{user.name}</TableCell>
+                  <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.mobile || "N/A"}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role || "Unknown"}</TableCell>
-                  <TableCell>{user.address || "N/A"}</TableCell>
+                  <TableCell className="max-w-[14rem] break-all">
+                    {user.email}
+                  </TableCell>
+                  <TableCell className="capitalize">{user.role || "Unknown"}</TableCell>
+                  <TableCell className="max-w-[16rem] truncate">
+                    {user.address || "N/A"}
+                  </TableCell>
                   <TableCell>
-                    {user.status === true ? (
-                      <span className="text-green-500 text-xs font-bold text-center bg-green-100 py-2 px-3 rounded-lg ">
-                        Actived
+                    {canToggleStatus(user) ? (
+                      isUserActive(user) ? (
+                        <span className="inline-flex rounded-lg bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700">
+                          Active
+                        </span>
+                      ) : (
+                        <Button
+                          onClick={() => handleActivate(user._id)}
+                          className="bg-red-100 text-red-500 hover:bg-red-200 py-1 px-3 rounded-lg text-xs font-bold text-center"
+                        >
+                          Activate
+                        </Button>
+                      )
+                    ) : isUserActive(user) ? (
+                      <span className="inline-flex rounded-lg bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700">
+                        Active
                       </span>
                     ) : (
-                      <Button
-                        onClick={() => handleActivate(user._id)}
-                        className="bg-red-100 text-red-500 hover:bg-red-200 py-1 px-3 rounded-lg text-xs font-bold text-center"
-                      >
-                        Activate
-                      </Button>
+                      <span className="inline-flex rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-600">
+                        Inactive
+                      </span>
                     )}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan="5" className="text-center">
+                <TableCell colSpan="6" className="text-center py-10 text-gray-500">
                   No users found
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </Card>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="space-y-3 lg:hidden">
+        {paginatedData.length > 0 ? (
+          paginatedData.map((user) => (
+            <article
+              key={user._id}
+              className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-semibold text-gray-900 break-words">
+                    {user.name}
+                  </p>
+                  <p className="mt-0.5 text-xs capitalize text-orange-600">
+                    {user.role || "Unknown"}
+                  </p>
+                </div>
+                {canToggleStatus(user) ? (
+                  isUserActive(user) ? (
+                    <span className="inline-flex shrink-0 rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                      Active
+                    </span>
+                  ) : (
+                    <Button
+                      size="sm"
+                      onClick={() => handleActivate(user._id)}
+                      className="shrink-0 bg-red-100 text-red-600 hover:bg-red-200"
+                    >
+                      Activate
+                    </Button>
+                  )
+                ) : isUserActive(user) ? (
+                  <span className="inline-flex shrink-0 rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                    Active
+                  </span>
+                ) : (
+                  <span className="inline-flex shrink-0 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">
+                    Inactive
+                  </span>
+                )}
+              </div>
+              <dl className="mt-3 space-y-2 text-sm text-gray-600">
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0 text-gray-500">Email</dt>
+                  <dd className="break-all">{user.email}</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0 text-gray-500">Mobile</dt>
+                  <dd>{user.mobile || "N/A"}</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0 text-gray-500">Address</dt>
+                  <dd className="break-words">{user.address || "N/A"}</dd>
+                </div>
+              </dl>
+            </article>
+          ))
+        ) : (
+          <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500">
+            <UsersRound className="mx-auto mb-2 h-5 w-5 text-gray-400" />
+            No users found
+          </div>
+        )}
+      </div>
 
       {/* Pagination */}
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <p>Show</p>
           <DropdownMenu>

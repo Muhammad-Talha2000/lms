@@ -14,6 +14,15 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
   const role = loggedinUser?.user?.role;
 
   const navigate = useNavigate();
+  const currentUserId = loggedinUser?.user?._id?.toString();
+
+  const visibleSubjects =
+    role === "instructor"
+      ? (subjects || []).filter((subject) => {
+          const subInst = subject?.instructor?._id ?? subject?.instructor;
+          return subInst?.toString() === currentUserId;
+        })
+      : subjects || [];
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -64,9 +73,12 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
   };
 
   return (
-    <section className="my-8 min-w-0 border-b border-gray-100 pb-10">
+    <section className="min-w-0">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            Learning content
+          </p>
           <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
             Subjects
           </h2>
@@ -85,20 +97,24 @@ const SubjectsList = ({ subjects, classId, refreshSubjects, isEnrolled }) => {
         )}
       </div>
 
-      {subjects.length === 0 ? (
+      {visibleSubjects.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/80 px-6 py-12 text-center">
           <p className="text-sm font-medium text-gray-600">
-            No subjects in this class yet.
+            {role === "instructor"
+              ? "No subjects are assigned to you in this class yet."
+              : "No subjects in this class yet."}
           </p>
           <p className="mt-1 text-xs text-gray-500">
             {role === "admin"
               ? "Use Add subject to create one."
+              : role === "instructor"
+              ? "Subjects assigned to you will appear here."
               : "Check back later."}
           </p>
         </div>
       ) : (
-        <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-2 min-w-0 p-0 m-0">
-          {subjects.map((subject, index) => {
+        <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 min-w-0 p-0 m-0">
+          {visibleSubjects.map((subject, index) => {
             const inst = subject?.instructor?._id ?? subject?.instructor;
             const isInstructor =
               inst?.toString() === loggedinUser?.user?._id?.toString();

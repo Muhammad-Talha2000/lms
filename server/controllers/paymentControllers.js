@@ -12,6 +12,12 @@ const frontendUrl = (
 
 const currency = (process.env.STRIPE_CURRENCY || "pkr").toLowerCase();
 
+const toPlainText = (value = "") =>
+  String(value)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 /**
  * Stripe Checkout — price is taken from the course document (not client body) to avoid tampering.
  */
@@ -51,6 +57,7 @@ export const createCheckoutSession = async (req, res) => {
     }
 
     const unitAmount = Math.round(priceNumber * 100);
+    const plainDescription = toPlainText(course.description);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -65,7 +72,7 @@ export const createCheckoutSession = async (req, res) => {
             product_data: {
               name: course.name,
               description:
-                (course.description && String(course.description).slice(0, 500)) ||
+                (plainDescription && plainDescription.slice(0, 500)) ||
                 `Course enrollment`,
             },
           },
@@ -151,5 +158,69 @@ export const confirmCheckoutSession = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Confirmation failed." });
+  }
+};
+
+/**
+ * Admin payments dashboard data using enrollment records in DB.
+ * This is a best-effort overview when no dedicated payment ledger exists.
+ */
+export const getAdminPaymentOverview = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "Admins only." });
+    }
+
+    const courses = await Course.find({})
+      .select("name price enrolledStudents instructor updatedAt")
+      .populate("enrolledStudents", "name email")
+      .populate("instructor", "name");
+
+    const transactions = [];
+    let totalRevenue = 0;
+
+    courses.forEach((course) => {
+      const price = Number(course.price) || 0;
+      const students = course.enrolledStudents || [];
+      students.forEach((student) => {
+        totalRevenue += price;
+        transactions.push({
+          id: `${course._id}-${student._id}`,
+          courseId: String(course._id),
+          courseName: course.name || "Untitled course",
+          studentId: String(student._id),
+          studentName: student.name || "Unknown student",
+          studentEmail: student.email || "",
+          instructorName: course.instructor?.name || "Unknown instructor",
+          amount: price,
+          currency: currency.toUpperCase(),
+          status: "paid",
+          createdAt: course.updatedAt || new Date(),
+        });
+      });
+    });
+
+    transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const totalTransactions = transactions.length;
+    const averageOrderValue =
+      totalTransactions > 0 ? Math.round(totalRevenue / totalTransactions) : 0;
+
+    return res.status(200).json({
+      summary: {
+        totalTransactions,
+        totalRevenue,
+        averageOrderValue,
+        coursesWithSales: courses.filter(
+          (course) => (course.enrolledStudents || []).length > 0
+        ).length,
+      },
+      recentTransactions: transactions.slice(0, 50),
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: error.message || "Failed to fetch payment overview." });
   }
 };

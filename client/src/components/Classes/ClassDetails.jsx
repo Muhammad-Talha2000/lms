@@ -10,7 +10,13 @@ import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import DefaultLayout from "@/components/layout/DefaultLayout";
-import { Loader2, Pencil } from "lucide-react";
+import {
+  BadgeDollarSign,
+  BookOpen,
+  Loader2,
+  Pencil,
+  Users,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -209,9 +215,12 @@ const ClassDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto w-full max-w-5xl min-w-0 overflow-x-hidden px-3 pb-12 sm:px-5 box-border">
-        {canEditClass ? (
-          <div className="mb-4 flex justify-end">
+      <div className="mx-auto w-full max-w-6xl min-w-0 overflow-x-hidden px-3 pb-12 sm:px-5 box-border">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            Class overview
+          </p>
+          {canEditClass ? (
             <Button
               type="button"
               variant="outline"
@@ -222,13 +231,62 @@ const ClassDetails = () => {
               <Pencil className="h-4 w-4" aria-hidden />
               Edit class
             </Button>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
+
         <ClassHeader
           name={classDetails.name}
           description={classDetails.description}
           thumbnail={classDetails.thumbnail}
         />
+
+        <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm sm:p-5">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                <BookOpen className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Subjects
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {classDetails.subjects?.length || 0}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm sm:p-5">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+                <Users className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Enrolled students
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {classDetails.students?.length || 0}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm sm:p-5 sm:col-span-2 xl:col-span-1">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                <BadgeDollarSign className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Class price
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  Rs. {Number(classDetails.price || 0)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {role === "student" &&
           ((classDetails?.students || []).some(
@@ -257,15 +315,19 @@ const ClassDetails = () => {
             </div>
           ))}
 
-        <SubjectsList
-          subjects={classDetails.subjects || []}
-          classId={id}
-          refreshSubjects={refreshSubjects}
-          isEnrolled={isEnrolled}
-        />
+        <div className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm sm:p-6">
+          <SubjectsList
+            subjects={classDetails.subjects || []}
+            classId={id}
+            refreshSubjects={refreshSubjects}
+            isEnrolled={isEnrolled}
+          />
+        </div>
 
         {role && role !== "student" && (
-          <StudentsList students={classDetails.students || []} />
+          <div className="mt-8">
+            <StudentsList students={classDetails.students || []} />
+          </div>
         )}
 
         <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>

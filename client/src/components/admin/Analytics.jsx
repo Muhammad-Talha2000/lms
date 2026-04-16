@@ -35,7 +35,23 @@ const Analytics = () => {
   const [error, setError] = useState("");
   const { loggedinUser } = useSelector((state) => state.auth);
 
-  const PIE_COLORS = ["#f97316", "#3b82f6", "#10b981", "#8b5cf6", "#ef4444"];
+  // LMS theme palette: enterprise navy + orange accents + soft neutrals
+  const THEME = {
+    orange: "#f97316",
+    orangeSoft: "#fdba74",
+    navy: "#0f2a59",
+    sky: "#3b82f6",
+    slate: "#64748b",
+    emerald: "#10b981",
+    grid: "#e5e7eb",
+  };
+  const PIE_COLORS = [
+    THEME.orange,
+    THEME.navy,
+    THEME.sky,
+    THEME.slate,
+    THEME.orangeSoft,
+  ];
 
   const toMonthKey = (dateInput) => {
     const date = new Date(dateInput);
@@ -200,7 +216,7 @@ const Analytics = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <Card className="bg-gradient-to-br from-[#0f2a59] to-[#1d3f7a] text-white">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <p className="text-sm opacity-90">Instructors</p>
@@ -210,7 +226,7 @@ const Analytics = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
+        <Card className="bg-gradient-to-br from-[#1f3b6e] to-[#0f2a59] text-white">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <p className="text-sm opacity-90">Students</p>
@@ -245,7 +261,7 @@ const Analytics = () => {
                 }).format(kpis.totalRevenue)}
               </p>
             </div>
-            <Wallet className="w-8 h-8 text-emerald-600" />
+            <Wallet className="w-8 h-8 text-orange-500" />
           </CardContent>
         </Card>
 
@@ -258,7 +274,7 @@ const Analytics = () => {
               </p>
               <p className="text-xs text-gray-500 mt-1">Total user signups (tracked)</p>
             </div>
-            <TrendingUp className="w-8 h-8 text-violet-600" />
+            <TrendingUp className="w-8 h-8 text-[#0f2a59]" />
           </CardContent>
         </Card>
       </div>
@@ -331,7 +347,7 @@ const Analytics = () => {
           <CardContent className="h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={analytics.growthData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke={THEME.grid} />
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
@@ -339,14 +355,14 @@ const Analytics = () => {
                 <Line
                   type="monotone"
                   dataKey="users"
-                  stroke="#f97316"
+                  stroke={THEME.orange}
                   strokeWidth={3}
                   name="Users Joined"
                 />
                 <Line
                   type="monotone"
                   dataKey="courses"
-                  stroke="#3b82f6"
+                  stroke={THEME.navy}
                   strokeWidth={3}
                   name="Courses Created"
                 />
@@ -362,7 +378,7 @@ const Analytics = () => {
           <CardContent className="h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={analytics.enrollmentByType}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke={THEME.grid} />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
@@ -370,8 +386,8 @@ const Analytics = () => {
                 <Area
                   type="monotone"
                   dataKey="enrollments"
-                  stroke="#10b981"
-                  fill="#a7f3d0"
+                  stroke={THEME.orange}
+                  fill="#fed7aa"
                   name="Enrollments"
                 />
               </AreaChart>
@@ -387,13 +403,13 @@ const Analytics = () => {
         <CardContent className="h-[360px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={analytics.instructorPerformance}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke={THEME.grid} />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="students" fill="#f97316" name="Students Taught" />
-              <Bar dataKey="courses" fill="#3b82f6" name="Courses" />
+              <Bar dataKey="students" fill={THEME.orange} name="Students Taught" />
+              <Bar dataKey="courses" fill={THEME.navy} name="Courses" />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>

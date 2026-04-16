@@ -77,14 +77,14 @@ const StudentsContent = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="w-full max-w-full min-w-0 px-3 py-4 sm:px-4 sm:py-6 lg:px-6">
       <h2 className="text-2xl font-bold text-orange-500">Students Overview</h2>
 
       <Dialog
         open={!!selectedActivity}
         onOpenChange={() => setSelectedActivity(null)}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           {selectedActivity?.type === "quiz" && (
             <>
               <DialogHeader>
@@ -93,7 +93,7 @@ const StudentsContent = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="font-medium">Score:</p>
                     <p>
@@ -122,7 +122,7 @@ const StudentsContent = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="font-medium">Submission Date:</p>
                     <p>
@@ -164,22 +164,24 @@ const StudentsContent = () => {
       {courses?.length === 0 ? (
         <p className="text-gray-600 mt-4">No courses found.</p>
       ) : (
-        <Tabs defaultValue={courses[0]?._id} className="mt-6">
-          <TabsList className="p-2 rounded-lg">
+        <Tabs defaultValue={courses[0]?._id} className="mt-6 min-w-0">
+          <div className="overflow-x-auto pb-1">
+            <TabsList className="p-1 rounded-lg inline-flex min-w-max">
             {courses.map((course) => (
               <TabsTrigger
                 key={course._id}
                 value={course._id}
-                className="px-4 py-2 font-medium data-[state=active]:text-orange-500 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 text-gray-600"
+                className="px-3 sm:px-4 py-2 font-medium whitespace-nowrap data-[state=active]:text-orange-500 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 text-gray-600"
               >
                 {course.name}
               </TabsTrigger>
             ))}
-          </TabsList>
+            </TabsList>
+          </div>
 
           {courses.map((course) => (
             <TabsContent key={course._id} value={course._id}>
-              <Card className="mt-4 border-orange-500">
+              <Card className="mt-4 border-orange-500 w-full max-w-full min-w-0">
                 <CardContent className="p-4">
                   <h3 className="text-xl font-semibold text-orange-500">
                     {course.name} - Students
@@ -199,27 +201,27 @@ const StudentsContent = () => {
                         return (
                           <div
                             key={student._id}
-                            className="bg-orange-50 p-3 rounded-lg border border-orange-200"
+                            className="bg-orange-50 p-3 rounded-lg border border-orange-200 min-w-0"
                           >
                             <div
-                              className="flex justify-between items-center cursor-pointer"
+                              className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center cursor-pointer min-w-0"
                               onClick={() =>
                                 toggleStudentExpansion(student._id)
                               }
                             >
-                              <div>
-                                <p className="font-medium text-orange-600">
+                              <div className="min-w-0">
+                                <p className="font-medium text-orange-600 break-words">
                                   {student.name}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 break-all">
                                   {student.email}
                                 </p>
                               </div>
-                              <div className="flex gap-2 items-center">
-                                <Badge className="bg-blue-100 text-blue-600">
+                              <div className="flex flex-wrap gap-2 items-center min-w-0">
+                                <Badge className="bg-blue-100 text-blue-600 whitespace-nowrap">
                                   Quizzes: {activities.quizAttempts.length}
                                 </Badge>
-                                <Badge className="bg-purple-100 text-purple-600">
+                                <Badge className="bg-purple-100 text-purple-600 whitespace-nowrap">
                                   Assignments:{" "}
                                   {activities.assignmentSubmissions.length}
                                 </Badge>
@@ -252,9 +254,9 @@ const StudentsContent = () => {
                                               })
                                             }
                                           >
-                                            <div className="flex justify-between">
-                                              <span>{attempt.quizTitle}</span>
-                                              <Badge className="bg-green-100 text-green-600">
+                                            <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center min-w-0">
+                                              <span className="break-words">{attempt.quizTitle}</span>
+                                              <Badge className="bg-green-100 text-green-600 w-fit">
                                                 Score: {attempt.score}/
                                                 {attempt.totalQuestions}
                                               </Badge>
@@ -295,8 +297,8 @@ const StudentsContent = () => {
                                               })
                                             }
                                           >
-                                            <div className="flex justify-between">
-                                              <span>{sub.assignmentTitle}</span>
+                                            <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center min-w-0">
+                                              <span className="break-words">{sub.assignmentTitle}</span>
                                               <Badge
                                                 className={
                                                   sub.status === "late"

@@ -320,8 +320,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { getAllUsers } from "@/services/authService";
-import { useSelector } from "react-redux";
+import { getPublicInstructors } from "@/services/authService";
 
 const staticInstructors = [
   {
@@ -353,34 +352,25 @@ const staticInstructors = [
 const InstructorsDetails = () => {
   const [instructors, setInstructors] = useState(staticInstructors);
   const [loading, setLoading] = useState(true);
-  const { loggedinUser } = useSelector((state) => state.auth);
   const carouselRef = useRef(null);
 
   useEffect(() => {
-    if (loggedinUser?.token) {
-      const fetchInstructors = async () => {
-        try {
-          const data = await getAllUsers(loggedinUser.token);
-          console.log("Fetched Users:", data);
-
-          // Filter users to get only instructors
-          const instructorList = data.users.filter(
-            (user) => user.role === "instructor"
-          );
-
+    const fetchInstructors = async () => {
+      try {
+        const data = await getPublicInstructors();
+        const instructorList = data?.instructors || [];
+        if (instructorList.length > 0) {
           setInstructors(instructorList);
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        } finally {
-          setLoading(false);
         }
-      };
+      } catch (error) {
+        console.error("Error fetching instructors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchInstructors();
-    } else {
-      setLoading(false); // If not logged in, use static data
-    }
-  }, [loggedinUser]);
+    fetchInstructors();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -423,7 +413,7 @@ const InstructorsDetails = () => {
               <CarouselContent>
                 {instructors.map((instructor) => (
                   <CarouselItem
-                    key={instructor.id}
+                    key={instructor._id || instructor.id}
                     className="basis-1/1 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
                   >
                     <Card className="border border-gray-200 shadow-lg rounded-lg overflow-hidden">

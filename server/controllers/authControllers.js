@@ -268,6 +268,22 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+// Public instructors list (no auth): homepage/team sections
+export const getPublicInstructors = async (req, res) => {
+  try {
+    const instructors = await Instructor.find(
+      { status: true },
+      { name: 1, profileImage: 1, role: 1 }
+    ).sort({ createdAt: -1 });
+
+    res.status(200).json({ instructors });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching instructors", error: err.message });
+  }
+};
+
 export const logoutUser = async (req, res) => {
   const { userId } = req.body;
 
@@ -302,23 +318,32 @@ export const toggleInstructorStatus = async (req, res) => {
 
     const { instructorId } = req.params;
 
-    const instructor = await Instructor.findById(instructorId);
-    if (!instructor) {
-      return res.status(404).json({ message: "Instructor not found" });
+    // Backward-compatible route param name, but now supports both instructors and learners.
+    let user = await Instructor.findById(instructorId);
+    let target = "Instructor";
+    if (!user) {
+      user = await Student.findById(instructorId);
+      target = "Learner";
+    }
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Instructor or learner not found" });
     }
 
-    // Toggle the status
-    instructor.status = !instructor.status; // Toggle status
-    await instructor.save();
+    user.status = !Boolean(user.status);
+    await user.save();
 
     res.status(200).json({
-      message: "Instructor status toggled successfully",
+      message: `${target} status toggled successfully`,
+      status: user.status,
+      role: user.role,
     });
   } catch (error) {
     res
       .status(500)
       .json({
-        message: "Error updating instructor status",
+        message: "Error updating user status",
         error: error.message,
       });
   }

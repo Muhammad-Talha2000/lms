@@ -15,6 +15,7 @@ import SearchBar from "../Classes/SearchBar";
 import ClassTable from "../Classes/ClassTable";
 import ClassForm from "../Classes/ClassForm";
 import DeleteDialog from "../Classes/DeleteDialog";
+import { BookOpen, DollarSign, Sparkles } from "lucide-react";
 
 const ClassManagement = () => {
   const [classes, setClasses] = useState([]);
@@ -183,38 +184,106 @@ const ClassManagement = () => {
     navigate(`/class/${classId}`);
   };
 
+  const totalClasses = filteredClasses.length;
+  const averagePrice =
+    totalClasses > 0
+      ? Math.round(
+          filteredClasses.reduce(
+            (sum, classItem) => sum + Number(classItem.price || 0),
+            0
+          ) / totalClasses
+        )
+      : 0;
+
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
-        <h2 className="text-3xl font-serif font-bold mb-6 text-center text-gray-800 border-b pb-3">
-          Class Management
-        </h2>
+    <>
+      <div className="min-h-[60vh] w-full px-1 py-2 sm:px-2 sm:py-4">
+      <div className="mx-auto w-full max-w-6xl space-y-5">
+        <section className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-amber-50/70 p-5 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600 shadow-sm">
+                <Sparkles className="h-3.5 w-3.5" />
+                Admin workspace
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                Class Management
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm text-gray-600">
+                Create, edit, and organize classes with quick access to pricing
+                and details.
+              </p>
+            </div>
+            <Button
+              onClick={openCreateModal}
+              className="h-11 rounded-xl bg-orange-500 px-5 font-semibold text-white hover:bg-orange-600"
+            >
+              Create New Class
+            </Button>
+          </div>
+        </section>
 
-        <div className="flex justify-between items-center mb-6">
-          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                <BookOpen className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Visible classes
+                </p>
+                <p className="text-xl font-bold text-gray-900">{totalClasses}</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                <DollarSign className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Average price
+                </p>
+                <p className="text-xl font-bold text-gray-900">Rs. {averagePrice}</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:col-span-2 lg:col-span-1">
+            <p className="text-xs uppercase tracking-wide text-gray-500">
+              Search scope
+            </p>
+            <p className="mt-1 text-sm font-medium text-gray-700">
+              Name and description
+            </p>
+          </div>
+        </section>
 
-          <Button
-            onClick={openCreateModal}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold"
-          >
-            Create New Class
-          </Button>
-        </div>
+        <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <p className="text-sm text-gray-500">
+              {filteredClasses.length} result
+              {filteredClasses.length === 1 ? "" : "s"}
+            </p>
+          </div>
 
-        <ClassTable
-          classes={filteredClasses}
-          onEdit={openEditModal}
-          onDelete={openDeleteDialog}
-          onRowClick={handleRowClick}
-          isLoading={isLoading}
-        />
+          <ClassTable
+            classes={filteredClasses}
+            onEdit={openEditModal}
+            onDelete={openDeleteDialog}
+            onRowClick={handleRowClick}
+            isLoading={isLoading}
+          />
+        </section>
       </div>
-
+      </div>
       {/* Unified Modal for Create and Edit */}
       <Dialog open={isFormModalOpen} onOpenChange={setIsFormModalOpen}>
         <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-serif">
+            <DialogTitle className="text-2xl font-bold">
               {isEditing ? "Edit Class" : "Create New Class"}
             </DialogTitle>
           </DialogHeader>
@@ -240,7 +309,7 @@ const ClassManagement = () => {
         itemToDelete={classToDelete}
         isLoading={isLoading}
       />
-    </div>
+    </>
   );
 };
 

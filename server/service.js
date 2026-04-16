@@ -55,6 +55,7 @@ app.use(
       "Authorization",
       "X-Client-IP",
       "Accept",
+      "timezone",
     ],
     credentials: true,
   })

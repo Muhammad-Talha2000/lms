@@ -146,7 +146,7 @@ if (!course) {
   return (
         <>
       {/* <PageHeader /> */}
-      <div className="w-full flex-1 p-8 justify-center my-6">
+      <div className="my-6 w-full flex-1 justify-center p-3 sm:p-5 lg:p-8">
       <div className="max-w-full mx-auto">
         {/* Left Section */}
         <Card className="w-full  bg-white  shadow-md rounded-lg">
@@ -160,7 +160,9 @@ if (!course) {
           className="w-full h-[60vh] object-cover rounded-lg mb-4"
         />
       ) : (
-        <div>No thumbnail available</div>
+        <div className="rounded-lg bg-gray-100 p-6 text-sm text-gray-500">
+          No thumbnail available
+        </div>
       )}
             </div>
             <div className="p- flex space-x-2 mb-3">
@@ -182,22 +184,26 @@ if (!course) {
 
           {/* Tabs Section */}
           <div className="border-t">
-            <ul className="flex bg-gray-100  space-x-4 center-center  border-b items-center justify-evenly ">
-              <li className="w-1/4 flex gap-2 items-center text-orange-500 font-bold p-4 border-r-2">
+            <ul className="grid grid-cols-2 gap-0 border-b bg-gray-100 md:grid-cols-4">
+              <li className="flex min-w-0 items-center gap-2 border-b border-r border-gray-200 p-3 text-orange-500 md:border-b-0 md:p-4">
                 <CiBookmark />
-                Price <span className="text-gray-500">${course.price}</span>
+                <span className="font-bold">Price</span>
+                <span className="min-w-0 break-words text-gray-500">${course.price}</span>
               </li>
-              <li className="w-1/4 flex gap-2 items-center text-gray-500 border-r-2 p-4">
+              <li className="flex min-w-0 items-center gap-2 border-b border-gray-200 p-3 text-gray-500 md:border-b-0 md:border-r md:p-4">
                 <LuBookText />
-                Duration <span className="text-gray-500">{course.duration}</span>
+                <span>Duration</span>
+                <span className="min-w-0 break-words text-gray-500">{course.duration}</span>
               </li>
-              <li className="w-1/4 flex gap-2 items-center text-gray-500 border-r-2 p-4">
+              <li className="flex min-w-0 items-center gap-2 border-r border-gray-200 p-3 text-gray-500 md:p-4">
                 <BsPerson />
-                Language <span className="text-gray-500">{course.language}</span>
+                <span>Language</span>
+                <span className="min-w-0 break-words text-gray-500">{course.language}</span>
               </li>
-              <li className="w-1/4 flex gap-2 items-center text-gray-500 p-4">
+              <li className="flex min-w-0 items-center gap-2 p-3 text-gray-500 md:p-4">
                 <FaRegStar />
-                Level <span className="text-gray-500">{course.courseLevel}</span>
+                <span>Level</span>
+                <span className="min-w-0 break-words text-gray-500">{course.courseLevel}</span>
               </li>
             </ul>
 

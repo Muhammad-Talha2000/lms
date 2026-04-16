@@ -12,7 +12,7 @@ const SubjectSidebar = ({
   const [thumbError, setThumbError] = useState(false);
 
   return (
-    <div className="h-full min-h-0 w-full min-w-0 rounded-xl border border-white/10 bg-white/95 p-3 shadow-sm backdrop-blur-sm sm:p-4 lg:w-80">
+    <div className="h-full min-h-0 w-full min-w-0 rounded-none border-r border-gray-200 bg-white p-3 shadow-none sm:p-4 lg:w-80 lg:rounded-2xl lg:border lg:border-gray-200/90 lg:shadow-sm">
       <div className="space-y-3">
         <h1 className="break-words text-lg font-bold leading-tight text-orange-700 sm:text-xl">
           {subject.name}
@@ -22,7 +22,7 @@ const SubjectSidebar = ({
             <img
               src={subject.thumbnail}
               alt=""
-              className="h-40 w-full object-cover sm:h-48"
+              className="h-40 w-full object-cover object-center sm:h-48"
               onError={() => setThumbError(true)}
             />
           ) : (
