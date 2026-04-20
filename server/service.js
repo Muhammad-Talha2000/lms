@@ -140,21 +140,36 @@ app.get("/", (req, res) => {
   res.send("Backend is working!");
 });
 // Configure Nodemailer
-const transporter = nodemailer.createTransport({
-  service: "Gmail", // email service
-  auth: {
-    user: "codequesolutions@gmail.com",
-    pass: "ugth rahy zxeu bmct",
-  },
-});
+const mailUser = process.env.EMAIL_USER;
+const mailPass = process.env.EMAIL_PASS;
+const contactReceiverEmail =
+  process.env.CONTACT_RECEIVER_EMAIL || process.env.EMAIL_USER;
+
+const transporter =
+  mailUser && mailPass
+    ? nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: mailUser,
+          pass: mailPass,
+        },
+      })
+    : null;
 
 // Route to handle form submission
 app.post("/send-email", (req, res) => {
+  if (!transporter || !contactReceiverEmail) {
+    return res.status(500).json({
+      success: false,
+      message: "Email service is not configured.",
+    });
+  }
+
   const { name, email, subject, message } = req.body;
 
   const mailOptions = {
     from: email,
-    to: "smartflowtechofficial@gmail.com", // Replace with the recipient's email
+    to: contactReceiverEmail,
     subject: `Contact Form Submission: ${subject}`,
     text: `You have a new message from ${name} (${email}):\n\n${message}`,
   };

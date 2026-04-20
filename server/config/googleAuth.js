@@ -1,22 +1,17 @@
 import { google } from "googleapis";
-import fs from "fs";
-import path from "path";
-
-// Load credentials from credentials.json
-const CREDENTIALS_PATH = path.resolve("config", "credentials.json");
-const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, "utf-8"));
-
-const { client_id, client_secret, redirect_uris } =
-  credentials.installed || credentials.web;
+const clientId = process.env.GOOGLE_CLIENT_ID;
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const redirectUri =
+  process.env.GOOGLE_REDIRECT_URI || process.env.FRONTEND_URL || "http://localhost:5173";
 
 // Use the Admin's refresh token (from .env file)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL; // Google Workspace Admin email
 const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 
 const oAuth2Client = new google.auth.OAuth2(
-  client_id,
-  client_secret,
-  redirect_uris[0]
+  clientId,
+  clientSecret,
+  redirectUri
 );
 
 // Set Admin's refresh token

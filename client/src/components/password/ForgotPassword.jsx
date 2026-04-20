@@ -2,6 +2,7 @@
 import { Button } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ const ForgotPassword = () => {
     setError("");
     setMessage("");
     try {
-      const res = await fetch("http://localhost:5000/api/v1/password", {
+      const res = await fetch(`${API_V1_BASE}/password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

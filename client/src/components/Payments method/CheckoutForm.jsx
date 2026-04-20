@@ -4,6 +4,7 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import { API_ORIGIN } from "@/config/apiBase";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -27,7 +28,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/complete",
+        return_url: `${API_ORIGIN}/complete`,
       },
     });
 

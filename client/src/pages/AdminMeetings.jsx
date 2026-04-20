@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const AdminMeetings = () => {
   const [meetings, setMeetings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/v1/zoom/calendar")
+    fetch(`${API_V1_BASE}/zoom/calendar`)
       .then((res) => res.json())
       .then((data) => setMeetings(data))
       .catch((error) => console.error("Error:", error));

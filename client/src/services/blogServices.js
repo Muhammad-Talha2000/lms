@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const BASE_URL = "http://localhost:5000/api/v1/blogs";
+const BASE_URL = `${API_V1_BASE}/blogs`;
 
 export const createBlog = async (payload, token) => {
   try {

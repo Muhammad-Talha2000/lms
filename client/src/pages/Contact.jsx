@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import axios from "axios";
+import { API_ORIGIN } from "@/config/apiBase";
 
 const ContactUs = () => {
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ const ContactUs = () => {
 
     try {
       console.log("Form data being sent:", formData);
-      const response = await fetch("http://localhost:5000/send-email", {
+      const response = await fetch(`${API_ORIGIN}/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

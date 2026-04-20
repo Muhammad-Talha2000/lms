@@ -1,7 +1,8 @@
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const API_URL = "http://localhost:5000/api/v1/subjects";
+const API_URL = `${API_V1_BASE}/subjects`;
 
 const SubjectService = {
   getSubjectsByClassId: async (classId) => {

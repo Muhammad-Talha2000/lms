@@ -1,21 +1,19 @@
 import { google } from "googleapis";
 import readline from "readline";
-import fs from "fs";
-import path from "path";
+import dotenv from "dotenv";
 
-// Load credentials from credentials.json
-const CREDENTIALS_PATH = path.resolve("credentials.json");
-const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, "utf-8"));
+dotenv.config();
 
-// Extract credentials
-const { client_id, client_secret, redirect_uris } =
-  credentials.installed || credentials.web;
+const clientId = process.env.GOOGLE_CLIENT_ID;
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const redirectUri =
+  process.env.GOOGLE_REDIRECT_URI || process.env.FRONTEND_URL || "http://localhost:5173";
 
 // Initialize OAuth2 client
 const oAuth2Client = new google.auth.OAuth2(
-  client_id,
-  client_secret,
-  redirect_uris[0]
+  clientId,
+  clientSecret,
+  redirectUri
 );
 
 const SCOPES = ["https://www.googleapis.com/auth/calendar"];

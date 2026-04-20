@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { setLoggedinUser, setSignupData } from "@/redux/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 import {
   InputOTP,
   InputOTPGroup,
@@ -650,7 +651,7 @@ const Login = () => {
       const res = await handleSubmit(e, "Signup");
       console.log(res);
 
-      const response = await axios.post("http://localhost:5000/api/v1/otp", {
+      const response = await axios.post(`${API_V1_BASE}/otp`, {
         email: signUpInput.email,
       });
 
@@ -708,7 +709,7 @@ const Login = () => {
     try {
       console.log(otp, signUpInput.email);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/otp/verify-otp",
+        `${API_V1_BASE}/otp/verify-otp`,
         {
           email: signUpInput.email,
           code: otp,

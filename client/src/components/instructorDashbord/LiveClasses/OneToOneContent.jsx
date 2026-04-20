@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Users } from "lucide-react";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const ScheduledMeetings = () => {
   const [meetings, setMeetings] = useState([]);
@@ -16,7 +17,7 @@ const ScheduledMeetings = () => {
   const fetchMeetings = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/one-to-one-meetings/scheduled",
+        `${API_V1_BASE}/one-to-one-meetings/scheduled`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMeetings(response.data);

@@ -89,6 +89,7 @@
 import { Button } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const ResetPassword = () => {
   const { id } = useParams(); // Get the token from the URL
@@ -111,7 +112,7 @@ const ResetPassword = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/v1/password/reset-password",
+        `${API_V1_BASE}/password/reset-password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

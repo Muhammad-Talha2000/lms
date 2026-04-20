@@ -133,6 +133,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const LiveClassesContent = () => {
   const [scheduledMeetings, setScheduledMeetings] = useState([]);
@@ -160,7 +161,7 @@ const LiveClassesContent = () => {
     try {
       setLoading(true);
       const meetingsResponse = await fetch(
-        "http://localhost:5000/api/v1/zoom/scheduled-meetings",
+        `${API_V1_BASE}/zoom/scheduled-meetings`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

@@ -80,7 +80,8 @@ export const forgotPassword = async (req, res) => {
     console.log("Token saved:", resetToken);
 
     // Reset link
-    const resetUrl = `http://localhost:5173/resetPassword/${resetToken}`;
+    const frontendBaseUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const resetUrl = `${frontendBaseUrl.replace(/\/$/, "")}/resetPassword/${resetToken}`;
 
     // Email transporter
     const transporter = nodemailer.createTransport({

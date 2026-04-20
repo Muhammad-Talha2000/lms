@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
 const useOTPHandler = (email) => {
   const [otp, setOtp] = useState("");
@@ -34,7 +35,7 @@ const useOTPHandler = (email) => {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/otp", {
+      const response = await axios.post(`${API_V1_BASE}/otp`, {
         email,
       });
 
@@ -61,7 +62,7 @@ const useOTPHandler = (email) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/otp/verify-otp",
+        `${API_V1_BASE}/otp/verify-otp`,
         {
           email,
           code: otp,

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_V1_BASE } from "@/config/apiBase";
 
-const BASEURL = "http://localhost:5000/api/v1/announcement";
+const BASEURL = `${API_V1_BASE}/announcement`;
 
 export const createAnnouncement = async (courseId, payload, token) => {
   try {
