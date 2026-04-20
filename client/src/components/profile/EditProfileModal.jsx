@@ -1,5 +1,6 @@
 // components/profile/EditProfileModal.jsx
 import React from "react";
+import { createPortal } from "react-dom";
 import { Input } from "../ui/input";
 import { BsPerson } from "react-icons/bs";
 import { TfiEmail } from "react-icons/tfi";
@@ -20,84 +21,102 @@ const EditProfileModal = ({
   handleSaveChanges,
   isLoading,
 }) => {
-  return (
-    showModal && (
-      <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4">
-        <div className="relative max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl border border-border bg-card p-4 shadow-lg sm:rounded-2xl sm:p-6">
+  React.useEffect(() => {
+    if (!showModal) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showModal]);
+
+  if (!showModal) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-slate-950/55 p-0 sm:items-center sm:p-4">
+      <div className="relative flex max-h-[92dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-border bg-card shadow-2xl sm:rounded-2xl">
+        <div className="flex items-start justify-between border-b border-border px-4 py-4 sm:px-6">
+          <div>
+            <h3 className="text-lg font-semibold text-foreground sm:text-xl">
+              Edit Profile
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Update your personal details and profile picture.
+            </p>
+          </div>
           <button
             onClick={() => setShowModal(false)}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            className="rounded-md p-2 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            aria-label="Close edit profile modal"
           >
             <FaTimes />
           </button>
+        </div>
 
-          <div className="mt-2">
-            <h3 className="text-lg font-semibold mb-4">Edit Profile</h3>
-
-            <div className="space-y-4">
-              {/* Profile Image Upload */}
-              <div className="relative">
-                <label className="block text-sm font-semibold mb-1">
-                  Profile Image
-                </label>
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300">
-                    <img
-                      src={formData.profileImage || "default-avatar.png"}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <input
-                    id="profile-image"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                  />
-                  <label
-                    htmlFor="profile-image"
-                    className="text-sm text-blue-500 cursor-pointer hover:underline"
-                  >
-                    Change Image
-                  </label>
-                </div>
+        <div className="overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
+          <div className="mb-5 rounded-xl border border-border/80 bg-muted/30 p-4">
+            <label className="mb-2 block text-sm font-semibold text-foreground">
+              Profile Image
+            </label>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="h-16 w-16 overflow-hidden rounded-full border border-border bg-background sm:h-20 sm:w-20">
+                <img
+                  src={formData.profileImage || "default-avatar.png"}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
               </div>
-
-              {/* Form Fields */}
-              <FormField
-                icon={BsPerson}
-                name="name"
-                label="Name"
-                value={formData.name}
-                onChange={handleInputChange}
+              <input
+                id="profile-image"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
               />
+              <label
+                htmlFor="profile-image"
+                className="inline-flex cursor-pointer items-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition hover:bg-muted"
+              >
+                Change Image
+              </label>
+            </div>
+          </div>
 
-              <FormField
-                icon={TfiEmail}
-                name="email"
-                type="email"
-                label="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <FormField
+              icon={BsPerson}
+              name="name"
+              label="Name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
 
-              <FormField
-                icon={FaMobileAlt}
-                name="mobile"
-                label="Mobile"
-                value={formData.mobile}
-                onChange={handleInputChange}
-              />
+            <FormField
+              icon={TfiEmail}
+              name="email"
+              type="email"
+              label="Email"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
 
-              <FormField
-                icon={FaUserGraduate}
-                name="role"
-                label="Role"
-                value={formData.role}
-                readOnly
-              />
+            <FormField
+              icon={FaMobileAlt}
+              name="mobile"
+              label="Mobile"
+              value={formData.mobile}
+              onChange={handleInputChange}
+            />
 
+            <FormField
+              icon={FaUserGraduate}
+              name="role"
+              label="Role"
+              value={formData.role}
+              readOnly
+            />
+
+            <div className="sm:col-span-2">
               <FormField
                 icon={FaLocationArrow}
                 name="address"
@@ -105,37 +124,39 @@ const EditProfileModal = ({
                 value={formData.address}
                 onChange={handleInputChange}
               />
-
-              <FormField
-                icon={FaCalendar}
-                name="dob"
-                type="date"
-                label="Date of Birth"
-                value={formData.dob}
-                onChange={handleInputChange}
-              />
             </div>
 
-            {/* Modal Buttons */}
-            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-4">
-              <button
-                onClick={() => setShowModal(false)}
-                className="w-full sm:w-auto px-4 py-2.5 text-muted-foreground bg-muted rounded-lg hover:bg-muted/80"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveChanges}
-                disabled={isLoading}
-                className="w-full sm:w-auto px-4 py-2.5 text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 disabled:opacity-50"
-              >
-                {isLoading ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
+            <FormField
+              icon={FaCalendar}
+              name="dob"
+              type="date"
+              label="Date of Birth"
+              value={formData.dob}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        <div className="border-t border-border bg-background/80 px-4 py-3 sm:px-6">
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full rounded-lg bg-muted px-4 py-2.5 text-muted-foreground transition hover:bg-muted/80 sm:w-auto"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+              className="w-full rounded-lg bg-primary px-4 py-2.5 text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50 sm:w-auto"
+            >
+              {isLoading ? "Saving..." : "Save Changes"}
+            </button>
           </div>
         </div>
       </div>
-    )
+    </div>,
+    document.body
   );
 };
 

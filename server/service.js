@@ -1,6 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
+import hpp from "hpp";
+import compression from "compression";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
@@ -29,18 +34,34 @@ dotenv.config();
 const app = express();
 
 // Middleware — allow local dev (Vite / CRA) and optional production origins
+const corsOriginsEnv = process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "";
 const corsAllowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "https://lms-corporateprism.vercel.app",
-  ...(process.env.CORS_ORIGINS || "")
+  ...corsOriginsEnv
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),
 ];
 const corsOriginSet = new Set(corsAllowedOrigins);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(helmet());
+app.use(compression());
+app.use(mongoSanitize());
+app.use(hpp());
+app.use("/api", apiLimiter);
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
 app.use(
   cors({
@@ -62,8 +83,6 @@ app.use(
 );
 
 // additional comment
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("trust proxy", true);
 

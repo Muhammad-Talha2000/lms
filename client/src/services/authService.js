@@ -107,12 +107,21 @@ export const getPublicInstructors = async () => {
   }
 };
 
-export const logoutUser = async (userId) => {
+export const logoutUser = async (token, userId) => {
   try {
-    const response = await axios.post(`${BASEURL}/logout`, { userId });
+    const response = await axios.post(
+      `${BASEURL}/logout`,
+      { userId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error Signing out", error.response?.data || error.message);
+    throw error.response?.data || { message: "Failed to sign out" };
   }
 };
 

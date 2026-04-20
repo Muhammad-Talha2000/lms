@@ -163,7 +163,7 @@ export default function Admin() {
   const handleLogout = async () => {
     try {
       setLogoutLoading(true);
-      await logoutUser(loggedinUser.user._id);
+      await logoutUser(loggedinUser.token, loggedinUser.user._id);
       dispatch(setLoggedinUser(null));
       localStorage.setItem("selectedMenuTab", "User Management");
       localStorage.setItem("selectedMenu", "Dashboard");

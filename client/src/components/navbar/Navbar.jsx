@@ -20,7 +20,9 @@ const Navbar = () => {
   const { loggedinUser } = useSelector((state) => state.auth);
 
   const handleLogout = async () => {
-    await logoutUser(loggedinUser.user._id);
+    if (loggedinUser?.token && loggedinUser?.user?._id) {
+      await logoutUser(loggedinUser.token, loggedinUser.user._id);
+    }
     setIsProfileOpen(false);
     dispatch(setLoggedinUser(null));
     dispatch(resetCourse());

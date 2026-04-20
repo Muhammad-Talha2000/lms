@@ -6,6 +6,19 @@ import { hashPassword, verifyPassword } from "../utils/bcryptUtils.js";
 import { generateToken } from "../utils/jwtUtils.js";
 import Notification from "../models/Notification.js";
 
+const sanitizeUser = (userDoc) => {
+  if (!userDoc) return null;
+  const user = userDoc.toObject ? userDoc.toObject() : { ...userDoc };
+  const {
+    password,
+    resetPasswordToken,
+    resetPasswordExpires,
+    __v,
+    ...safeUser
+  } = user;
+  return safeUser;
+};
+
 // Create User
 export const createUser = async (req, res) => {
   const {
@@ -153,7 +166,7 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
-      user,
+      user: sanitizeUser(user),
       // user: {
       //   name: user.name,
       //   email: user.email,
@@ -233,7 +246,7 @@ export const getUserProfile = async (req, res) => {
 
     // Return user profile (excluding password)
     res.status(200).json({
-      user,
+      user: sanitizeUser(user),
     });
   } catch (err) {
     res
@@ -251,13 +264,13 @@ export const getAllUsers = async (req, res) => {
     const guardians = await Guardian.find({});
 
     const users = [
-      ...students.map((user) => ({ ...user.toObject(), role: "student" })),
+      ...students.map((user) => ({ ...sanitizeUser(user), role: "student" })),
       ...instructors.map((user) => ({
-        ...user.toObject(),
+        ...sanitizeUser(user),
         role: "instructor",
       })),
-      ...admins.map((user) => ({ ...user.toObject(), role: "admin" })),
-      ...guardians.map((user) => ({ ...user.toObject(), role: "guardian" })),
+      ...admins.map((user) => ({ ...sanitizeUser(user), role: "admin" })),
+      ...guardians.map((user) => ({ ...sanitizeUser(user), role: "guardian" })),
     ];
 
     res.status(200).json({ users });
