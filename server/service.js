@@ -32,6 +32,8 @@ dotenv.config();
 
 // Initialize Express app
 const app = express();
+// Render runs behind a single trusted proxy.
+app.set("trust proxy", 1);
 
 // Middleware — allow local dev (Vite / CRA) and optional production origins
 const corsOriginsEnv = process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "";
@@ -84,7 +86,6 @@ app.use(
 
 // additional comment
 app.use(bodyParser.json());
-app.set("trust proxy", true);
 
 // Global request logging middleware with response codes
 app.use((req, res, next) => {
