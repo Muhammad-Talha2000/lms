@@ -1,8 +1,10 @@
 import React from "react";
 import { Play } from "lucide-react";
 import { AiFillThunderbolt } from "react-icons/ai";
-// import hero_image from "../../assets/images/hero.png";
-import hero_image from "../../assets/img/hero.png";
+import hero_image from "../../assets/img/about1.png";
+import learnerOne from "../../assets/img/team1.png";
+import learnerTwo from "../../assets/img/team2.png";
+import learnerThree from "../../assets/img/team3.png";
 import Counter from "../ui/Counter";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -61,17 +63,17 @@ const Hero = () => {
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <div className="flex -space-x-2 shrink-0">
                 <img
-                  src="/api/placeholder/32/32"
+                  src={learnerOne}
                   alt="Learner community member portrait"
                   className="w-8 h-8 rounded-full border-2 border-white"
                 />
                 <img
-                  src="/api/placeholder/32/32"
+                  src={learnerTwo}
                   alt="Learner community member portrait"
                   className="w-8 h-8 rounded-full border-2 border-white"
                 />
                 <img
-                  src="/api/placeholder/32/32"
+                  src={learnerThree}
                   alt="Learner community member portrait"
                   className="w-8 h-8 rounded-full border-2 border-white"
                 />

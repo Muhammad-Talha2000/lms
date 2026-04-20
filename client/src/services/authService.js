@@ -107,6 +107,19 @@ export const getPublicInstructors = async () => {
   }
 };
 
+export const getPublicPlatformStats = async () => {
+  try {
+    const response = await axios.get(`${BASEURL}/stats/public`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error fetching platform stats:",
+      error.response?.data || error.message
+    );
+    throw error.response?.data || { message: "Failed to fetch platform stats" };
+  }
+};
+
 export const logoutUser = async (token, userId) => {
   try {
     const response = await axios.post(

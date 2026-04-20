@@ -6,6 +6,7 @@ import {
   loginUser,
   getAllUsers,
   getPublicInstructors,
+  getPublicPlatformStats,
   logoutUser,
   toggleInstructorStatus,
 } from "../controllers/authControllers.js";
@@ -30,6 +31,7 @@ router.get("/users", authenticateUser, getAllUsers);
 
 // Public instructors for landing pages
 router.get("/instructors/public", getPublicInstructors);
+router.get("/stats/public", getPublicPlatformStats);
 
 // Logout User
 router.post("/logout", authenticateUser, logoutUser);

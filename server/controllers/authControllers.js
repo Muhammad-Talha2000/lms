@@ -2,6 +2,9 @@ import Student from "../models/auth/Student.js";
 import Instructor from "../models/auth/Instructor.js";
 import Admin from "../models/auth/Admin.js";
 import Guardian from "../models/auth/Guardian.js";
+import Course from "../models/Courses.js";
+import ClassModel from "../models/Class.js";
+import Subject from "../models/Subjects.js";
 import { hashPassword, verifyPassword } from "../utils/bcryptUtils.js";
 import { generateToken } from "../utils/jwtUtils.js";
 import Notification from "../models/Notification.js";
@@ -294,6 +297,43 @@ export const getPublicInstructors = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error fetching instructors", error: err.message });
+  }
+};
+
+// Public homepage stats for pre-signup visitors
+export const getPublicPlatformStats = async (req, res) => {
+  try {
+    const [
+      learners,
+      activeInstructors,
+      totalCourses,
+      publishedCourses,
+      totalClasses,
+      totalSubjects,
+    ] = await Promise.all([
+      Student.countDocuments({}),
+      Instructor.countDocuments({ status: true }),
+      Course.countDocuments({}),
+      Course.countDocuments({ published: true }),
+      ClassModel.countDocuments({}),
+      Subject.countDocuments({}),
+    ]);
+
+    res.status(200).json({
+      stats: {
+        learners,
+        activeInstructors,
+        totalCourses,
+        publishedCourses,
+        totalClasses,
+        totalSubjects,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error fetching public platform stats",
+      error: err.message,
+    });
   }
 };
 
