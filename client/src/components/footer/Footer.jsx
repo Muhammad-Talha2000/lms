@@ -22,7 +22,7 @@ const Footer = () => {
           {/* Connect */}
           <div>
             <h3 className="relative mb-6 text-lg font-semibold pb-2">
-              Connect with Smartflow
+              Connect with NexaLearn
               <span className="absolute bottom-0 left-0 h-0.5 w-12 bg-orange-500" />
             </h3>
             <p className="mb-4 text-gray-300">
@@ -38,10 +38,10 @@ const Footer = () => {
               </div>
               <p>
                 <a
-                  href="mailto:smartflowtechofficial@gmail.com"
+                  href="mailto:nexalearntechofficial@gmail.com"
                   className="hover:text-orange-400 break-all"
                 >
-                  smartflowtechofficial@gmail.com
+                  nexalearntechofficial@gmail.com
                 </a>
               </p>
             </div>
@@ -85,7 +85,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-          © {new Date().getFullYear()} Smartflow Tech. All rights reserved.
+          © {new Date().getFullYear()} NexaLearn Tech. All rights reserved.
         </div>
       </div>
     </footer>

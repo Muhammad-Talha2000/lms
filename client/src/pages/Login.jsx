@@ -786,8 +786,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="uppercase font-bold text-xl absolute top-2 left-3">
-        SMARTFLOW<span className="text-orange-500">LMS</span>
+      <h1 className="uppercase font-bold text-xl absolute top-2 left-3 flex items-center gap-2">
+        <img src="/brand-logo.svg" alt="NexaLearn logo" className="h-7 w-7 rounded-md" />
+        NEXALEARN<span className="text-orange-500">LMS</span>
       </h1>
       <Tabs
         defaultValue="register"

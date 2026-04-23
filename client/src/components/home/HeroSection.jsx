@@ -97,7 +97,7 @@ const Hero = () => {
             <div className="w-full max-w-md md:max-w-none md:w-[70%]">
               <img
                 src={hero_image}
-                alt="Students collaborating during an online lesson on the Smartflow LMS platform"
+                alt="Students collaborating during an online lesson on the NexaLearn LMS platform"
                 className="w-full h-auto max-h-[min(70vh,420px)] md:max-h-none object-contain md:object-cover rounded-lg shadow-lg"
               />
             </div>

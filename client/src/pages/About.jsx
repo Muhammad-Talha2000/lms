@@ -8,7 +8,7 @@ const About = () => {
       <PageHeader title="Who we are" breadcrumb="About" />
       <div className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 text-gray-700 leading-relaxed">
         <p className="mb-4">
-          Smartflow is an online learning platform built for teams and individuals who
+          NexaLearn is an online learning platform built for teams and individuals who
           want structured programs, clear progress tracking, and instructors who stay
           involved from day one to certification.
         </p>

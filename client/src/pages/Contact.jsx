@@ -211,7 +211,7 @@ const ContactUs = () => {
                   (123) 123-1234
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
-                  smartflowtechofficial@gmail.com
+                  nexalearntechofficial@gmail.com
                 </p>
               </div>
             </li>

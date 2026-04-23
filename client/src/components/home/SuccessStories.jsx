@@ -51,7 +51,7 @@ const SuccessStories = () => {
             <div className="p-1 bg-white rounded-full">
               <AiFillThunderbolt color="ea580c" />
             </div>
-            Why teams choose Smartflow
+            Why teams choose NexaLearn
           </span>
         </div>
         <h1 className="w-full font-bold text-xl sm:text-2xl pt-2 break-words">

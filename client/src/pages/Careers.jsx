@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Careers = () => {
   return (
     <DefaultLayout>
-      <PageHeader title="Careers at Smartflow" breadcrumb="Careers" />
+      <PageHeader title="Careers at NexaLearn" breadcrumb="Careers" />
       <div className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 text-gray-700 leading-relaxed">
         <p className="mb-4">
           We are growing a remote-friendly team across product, customer success, and
@@ -20,10 +20,10 @@ const Careers = () => {
         <p className="mb-8 text-sm text-gray-600">
           Email:{" "}
           <a
-            href="mailto:smartflowtechofficial@gmail.com?subject=Careers%20inquiry"
+            href="mailto:nexalearntechofficial@gmail.com?subject=Careers%20inquiry"
             className="font-medium text-orange-600 hover:underline"
           >
-            smartflowtechofficial@gmail.com
+            nexalearntechofficial@gmail.com
           </a>
         </p>
         <Link

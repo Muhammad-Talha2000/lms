@@ -206,10 +206,15 @@ const Navbar = () => {
             </button>
             <Link
               to="/"
-              className="text-base sm:text-xl font-bold truncate"
+              className="flex items-center gap-2 text-base sm:text-xl font-bold truncate"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="text-white tracking-tight">SMARTFLOW</span>
+              <img
+                src="/brand-logo.svg"
+                alt="NexaLearn logo"
+                className="h-7 w-7 rounded-md shrink-0"
+              />
+              <span className="text-white tracking-tight">NEXALEARN</span>
             </Link>
           </div>
 

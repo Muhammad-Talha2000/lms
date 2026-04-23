@@ -92,7 +92,7 @@ const ProfilePage = () => {
 
           <main className="flex-1 flex flex-col gap-6 lg:gap-8 min-w-0 w-full overflow-x-hidden">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-              Welcome to SMARTFLOW{" "}
+              Welcome to NEXALEARN{" "}
               <span className="text-primary">LMS</span>
             </h1>
 
