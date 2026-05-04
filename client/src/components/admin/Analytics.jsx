@@ -254,9 +254,9 @@ const Analytics = () => {
             <div>
               <p className="text-sm text-gray-500">Revenue Potential</p>
               <p className="text-3xl font-bold text-gray-900">
-                {new Intl.NumberFormat("en-PK", {
+                {new Intl.NumberFormat("en-US", {
                   style: "currency",
-                  currency: "PKR",
+                  currency: "USD",
                   maximumFractionDigits: 0,
                 }).format(kpis.totalRevenue)}
               </p>

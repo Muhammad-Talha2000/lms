@@ -128,9 +128,9 @@ const DashboardContent = ({ onViewAllTasks = () => {} }) => {
 
   const earningsLabel = isLoading
     ? "..."
-    : new Intl.NumberFormat("en-PK", {
+    : new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "PKR",
+        currency: "USD",
         maximumFractionDigits: 0,
       }).format(stats.earnings);
 

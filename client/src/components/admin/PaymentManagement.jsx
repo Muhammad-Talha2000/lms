@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { API_V1_BASE } from "@/config/apiBase";
 import { BadgeDollarSign, BookOpen, CreditCard, Users } from "lucide-react";
 
-const pkr = new Intl.NumberFormat("en-PK", {
+const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "PKR",
+  currency: "USD",
   maximumFractionDigits: 0,
 });
 
@@ -90,7 +90,7 @@ const PaymentManagement = () => {
             <div>
               <p className="text-xs uppercase tracking-wide text-gray-500">Revenue</p>
               <p className="text-xl font-bold text-gray-900">
-                {loading ? "..." : pkr.format(summary.totalRevenue || 0)}
+                {loading ? "..." : usd.format(summary.totalRevenue || 0)}
               </p>
             </div>
           </div>
@@ -103,7 +103,7 @@ const PaymentManagement = () => {
             <div>
               <p className="text-xs uppercase tracking-wide text-gray-500">Avg order</p>
               <p className="text-xl font-bold text-gray-900">
-                {loading ? "..." : pkr.format(summary.averageOrderValue || 0)}
+                {loading ? "..." : usd.format(summary.averageOrderValue || 0)}
               </p>
             </div>
           </div>
@@ -168,7 +168,7 @@ const PaymentManagement = () => {
                       <td className="px-4 py-3 text-gray-700">{txn.courseName}</td>
                       <td className="px-4 py-3 text-gray-600">{txn.instructorName}</td>
                       <td className="px-4 py-3 font-semibold text-emerald-700">
-                        {pkr.format(txn.amount || 0)}
+                        {usd.format(txn.amount || 0)}
                       </td>
                       <td className="px-4 py-3 text-gray-600">
                         {new Date(txn.createdAt).toLocaleString()}
@@ -197,7 +197,7 @@ const PaymentManagement = () => {
                   </p>
                   <div className="mt-2 flex items-center justify-between gap-2">
                     <span className="font-semibold text-emerald-700">
-                      {pkr.format(txn.amount || 0)}
+                      {usd.format(txn.amount || 0)}
                     </span>
                     <span className="text-xs text-gray-500 text-right">
                       {new Date(txn.createdAt).toLocaleString()}

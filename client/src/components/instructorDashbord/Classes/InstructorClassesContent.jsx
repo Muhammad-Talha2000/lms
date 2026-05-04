@@ -193,7 +193,7 @@ const InstructorClassesContent = () => {
                   </p>
                   <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-sm">
                     <span className="font-semibold text-orange-600">
-                      Rs. {Number(classItem.price || 0)}
+                      ${Number(classItem.price || 0)}
                     </span>
                     <span className="inline-flex items-center gap-1 text-gray-500">
                       <Users className="h-4 w-4" />

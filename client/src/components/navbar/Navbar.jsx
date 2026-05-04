@@ -156,6 +156,13 @@ const Navbar = () => {
     if (loggedinUser?.user?.role === "instructor") {
       return (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+          <Link
+            to="/profile"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => setIsProfileOpen(false)}
+          >
+            Your profile
+          </Link>
           <button
             onClick={handleLogout}
             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -311,7 +318,7 @@ const Navbar = () => {
               )}
               {loggedinUser?.token && (
                 <div className="px-4 py-3 border-t border-gray-100 mt-2 space-y-2">
-                  {loggedinUser.user?.role !== "instructor" && (
+                  {loggedinUser.user?.role !== "admin" && (
                     <Link
                       to="/profile"
                       className="block w-full text-left font-semibold py-2 text-gray-700"

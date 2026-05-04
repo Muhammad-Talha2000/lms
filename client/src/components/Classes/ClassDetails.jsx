@@ -281,7 +281,7 @@ const ClassDetails = () => {
                   Class price
                 </p>
                 <p className="text-xl font-bold text-gray-900">
-                  Rs. {Number(classDetails.price || 0)}
+                  ${Number(classDetails.price || 0)}
                 </p>
               </div>
             </div>

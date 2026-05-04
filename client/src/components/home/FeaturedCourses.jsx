@@ -175,7 +175,7 @@ const FeaturedCourses = ({ bgColor, width = "100%", searchQuery }) => {
                   {/* Price and View Details button */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4 border-t-2 border-[#e8f0f3] pt-4">
                     <p className="font-bold text-gray-800 shrink-0">
-                      Rs. {course?.price || "Free"}
+                      {course?.price ? `$${course.price}` : "Free"}
                     </p>
                     <Link
                       to={`/courseDetails/${course._id}`}

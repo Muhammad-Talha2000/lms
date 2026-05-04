@@ -29,7 +29,7 @@ const ProfileInfo = ({ user, handleEditProfile, isLoading }) => {
       <div className="space-y-4">
         <InfoField
           icon={FaUserGraduate}
-          label="Student"
+          label="Name"
           value={user?.name || "Not Available"}
         />
 

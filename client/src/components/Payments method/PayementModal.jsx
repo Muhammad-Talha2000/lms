@@ -50,7 +50,7 @@ const PaymentModal = ({ isOpen, onClose, actionType }) => {
             disabled={!stripe || isProcessing}
             className="submit-button"
           >
-            {isProcessing ? "Processing..." : `Pay Rs. 12`}
+            {isProcessing ? "Processing..." : `Pay $12`}
           </button>
         </form>
         <button onClick={onClose} className="close-button">

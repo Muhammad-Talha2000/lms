@@ -2,9 +2,9 @@ import React from "react";
 import { VideoIcon } from "lucide-react";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const pkr = new Intl.NumberFormat("en-PK", {
+const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "PKR",
+  currency: "USD",
   maximumFractionDigits: 0,
 });
 
@@ -37,7 +37,7 @@ const TopCourses = ({ courses = [], isLoading = false }) => {
             </div>
             <div className="shrink-0 text-left sm:text-right min-w-0">
               <h3 className="font-bold text-orange-500 whitespace-nowrap sm:whitespace-normal">
-                {pkr.format(Number(course.price) || 0)}
+                {usd.format(Number(course.price) || 0)}
               </h3>
               <p className="text-gray-500 text-sm">
                 {course.enrolledStudents?.length || 0} Subscribers

@@ -19,10 +19,17 @@ const ProfilePage = () => {
       navigate("/login");
       return;
     }
-    if (loggedinUser.user.role !== "student") {
-      navigate("/instructordashboard");
+    const role = loggedinUser.user?.role;
+    if (role === "admin") {
+      navigate("/admin");
+      return;
+    }
+    if (!["student", "instructor", "guardian"].includes(role)) {
+      navigate("/");
     }
   }, [loggedinUser, navigate]);
+
+  const isStudent = loggedinUser?.user?.role === "student";
 
   useEffect(() => {
     if (!profileNavOpen) return;
@@ -48,7 +55,7 @@ const ProfilePage = () => {
             Profile
           </button>
           <span className="text-sm font-semibold text-primary truncate max-w-[55%]">
-            My learning
+            {isStudent ? "My learning" : "My account"}
           </span>
         </div>
 
@@ -92,25 +99,42 @@ const ProfilePage = () => {
 
           <main className="flex-1 flex flex-col gap-6 lg:gap-8 min-w-0 w-full overflow-x-hidden">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-              Welcome to NEXALEARN{" "}
-              <span className="text-primary">LMS</span>
+              {isStudent ? (
+                <>
+                  Welcome to NEXALEARN <span className="text-primary">LMS</span>
+                </>
+              ) : (
+                <>
+                  Instructor account <span className="text-primary">settings</span>
+                </>
+              )}
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
-              <Genres
-                title="Learning Time"
-                description="2h 37m"
-                Icon={ChartNoAxesColumn}
-                padding={1}
-              />
-              <Genres
-                title="My Activities"
-                description="27 Tasks"
-                Icon={VscCircleLargeFilled}
-              />
-            </div>
+            {isStudent && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
+                  <Genres
+                    title="Learning Time"
+                    description="2h 37m"
+                    Icon={ChartNoAxesColumn}
+                    padding={1}
+                  />
+                  <Genres
+                    title="My Activities"
+                    description="27 Tasks"
+                    Icon={VscCircleLargeFilled}
+                  />
+                </div>
 
-            <StudentEnroll />
+                <StudentEnroll />
+              </>
+            )}
+            {!isStudent && (
+              <p className="text-muted-foreground max-w-xl">
+                Update your photo and contact details here. Changes apply across the
+                dashboard and anywhere your profile appears to learners.
+              </p>
+            )}
           </main>
         </div>
       </div>

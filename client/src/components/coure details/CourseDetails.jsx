@@ -330,7 +330,7 @@ function CourseDetails() {
             <Card className="bg-white rounded-md mb-4 shadow-md p-6">
               <div className="flex justify-between items-center mb-4">
                 <h1 className="text-4xl font-bold text-gray-900 ">
-                  Rs. {course?.price}
+                  $. {course?.price}
                 </h1>
                 <button className="bg-orange-500  p-4 rounded-full text-xs font-bold text-white">
                   25% OFF
@@ -395,8 +395,8 @@ function CourseDetails() {
                         totalPriceStatus: "FINAL",
                         totalPriceLabel: "Total",
                         totalPrice: course.price,
-                        currencyCode: "PKR",
-                        countryCode: "PK",
+                        currencyCode: "USD",
+                        countryCode: "US",
                       },
                     }}
                     onLoadPaymentData={(paymentData) => {

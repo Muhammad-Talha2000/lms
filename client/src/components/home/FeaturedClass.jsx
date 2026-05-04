@@ -93,7 +93,7 @@ const FeaturedClass = ({ bgColor, width, searchQuery }) => {
                   {/* Price and View Details button */}
                   <div className="flex items-center justify-between mt-4 border-t-2 border-orange-500 pt-4">
                     <p className="font-bold text-gray-800">
-                      Rs. {classItem?.price || "Free"}
+                      $. {classItem?.price || "Free"}
                     </p>
                     <Link
                       to={`/class/${classItem._id}`}

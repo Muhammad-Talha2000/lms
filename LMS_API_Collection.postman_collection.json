@@ -1137,7 +1137,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 5000,\n  \"currency\": \"PKR\",\n  \"studentId\": \"{{student_id}}\",\n  \"courseId\": \"{{course_id}}\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expiryDate\": \"12/25\",\n  \"cvv\": \"123\"\n}"
+              "raw": "{\n  \"amount\": 5000,\n  \"currency\": \"USD\",\n  \"studentId\": \"{{student_id}}\",\n  \"courseId\": \"{{course_id}}\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expiryDate\": \"12/25\",\n  \"cvv\": \"123\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/payment/pay",

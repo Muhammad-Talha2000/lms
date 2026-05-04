@@ -25,7 +25,7 @@
 //     // const paymentData = {
 //     //   // merchant_id: MERCHANT_ID,
 //     //   // amount: amount,
-//     //   // currency: "PKR",
+//     //   // currency: "USD",
 //     //   // card_details: {
 //     //   //   card_number: cardNumber,
 //     //   //   expiry_date: expiryDate,
@@ -41,7 +41,7 @@
 //       body: {
 //         amount: amount,
 //         language: "EN",
-//         currencyType: "PKR",
+//         currencyType: "USD",
 //         description: "Test Payment",
 //         approveURL: `http://localhost:5173/courseDetails/${courseId}`,
 //         cancelURL: `http://localhost:5173/courseDetails/${courseId}`,

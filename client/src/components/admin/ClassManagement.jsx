@@ -246,7 +246,7 @@ const ClassManagement = () => {
                 <p className="text-xs uppercase tracking-wide text-gray-500">
                   Average price
                 </p>
-                <p className="text-xl font-bold text-gray-900">Rs. {averagePrice}</p>
+                <p className="text-xl font-bold text-gray-900">${averagePrice}</p>
               </div>
             </div>
           </div>

@@ -4,9 +4,9 @@ import { FaBook, FaUser } from "react-icons/fa";
 import { MdAssignmentTurnedIn, MdQuiz } from "react-icons/md";
 import { Card } from "@/components/ui/card";
 
-const pkrFormat = new Intl.NumberFormat("en-PK", {
+const usdFormat = new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "PKR",
+  currency: "USD",
   maximumFractionDigits: 0,
 });
 
@@ -15,7 +15,7 @@ function formatCoursePrice(raw) {
   if (raw == null || raw === "" || !Number.isFinite(n) || n === 0) {
     return "Free";
   }
-  return pkrFormat.format(n);
+  return usdFormat.format(n);
 }
 
 const CourseCard = ({ courses }) => {

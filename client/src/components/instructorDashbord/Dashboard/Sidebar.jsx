@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
 
@@ -46,6 +47,14 @@ const Sidebar = ({ role, menuItems, headerTitle, onSelect, user, notificationCou
             />
           </div>
           <p className="text-sm font-bold text-orange-500">{user.name}</p>
+          {user.role === "instructor" && (
+            <Link
+              to="/profile"
+              className="text-xs font-semibold text-orange-600 hover:text-orange-700 hover:underline"
+            >
+              Edit profile
+            </Link>
+          )}
         </div>
       )}
 
